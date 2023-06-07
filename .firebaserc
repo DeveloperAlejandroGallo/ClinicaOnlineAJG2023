@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "clinica-online-ajg-2023": {
+      "hosting": {
+        "ClinicaOnlineAJG2023": [
+          "clinica-online-ajg-2023"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "clinica-online-ajg-2023"
+  }
+}

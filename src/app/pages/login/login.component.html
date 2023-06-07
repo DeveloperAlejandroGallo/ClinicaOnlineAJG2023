@@ -1,0 +1,118 @@
+<div class="card">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img
+        src="../../../assets/images/health-login.jpg"
+        class="card-img"
+        alt="login"
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card text-center">
+        <div class="card-body">
+          <div class="card-header text-white bg-info">Login</div>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="Email">Email</span>
+              </div>
+              <input
+                type="email"
+                class="form-control"
+                formControlName="emailLogin"
+                placeholder="Ingrese su email"
+                aria-label="Usuario"
+                aria-describedby="Email"
+              />
+              <ng-container
+              *ngIf="
+                (loginForm.controls['emailLogin'].hasError('email') ||
+                loginForm.controls['emailLogin'].hasError('required')) &&
+                loginForm.controls['emailLogin'].touched
+              "
+              >
+              <small class="error-message"> Debe ingresar un correo valido </small>
+            </ng-container>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="Pass">Clave</span>
+              </div>
+              <input
+                type="password"
+                class="form-control"
+                formControlName="passwordLogin"
+                placeholder="Ingrese su clave"
+                aria-label="Clave"
+                aria-describedby="Pass"
+              />
+              <ng-container
+              *ngIf="
+                loginForm.controls['passwordLogin'].hasError('required') &&
+                loginForm.controls['passwordLogin'].touched
+              "
+              >
+              <small class="error-message"> Debe ingresar una contraseña </small>
+            </ng-container>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-outline-info"
+              shape="round"
+              size="medium"
+            >
+              Ingresar
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              routerLink="/registro"
+              shape="round"
+              size="medium"
+            >
+              Registrarse
+            </button>
+            <hr /><small class="text-muted">Accesos rápidos</small>
+            <div>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="ingresoAutomatico('admin')"
+                shape="round"
+                size="medium"
+              >
+                Admin
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-info"
+                (click)="ingresoAutomatico('especialista')"
+                shape="round"
+                size="medium"
+              >
+                Especialista
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                (click)="ingresoAutomatico('paciente')"
+                shape="round"
+                size="medium"
+              >
+                Paciente
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="showError" class="card text-center text-white bg-danger mb-3" style="width: 18rem;">
+    <div class="card-header">Error</div>
+    <div class="card-body">
+        <h5 class="card-title">Verificar Email</h5>
+        <p class="card-text">Por favor ingrese a su correo y verifique su email.</p>
+    </div>
+</div> -->

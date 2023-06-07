@@ -1,0 +1,7 @@
+Sitio en fire
+Site key:   6LfRrXEmAAAAAOs2uUGLW6PR5ZW2dasWHd8p1w7h
+Secret key: 6LfRrXEmAAAAAGy___jgu8S25Q1vklfSSMkyMIih
+
+Localhost
+Site key:   6Lf9AHQmAAAAACNMKvkNQoVVV1264xKnU0Uxmrd2
+Secret key: 6Lf9AHQmAAAAAGNulT44ShgtkdSBrKAE611KTXcS

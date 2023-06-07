@@ -1,0 +1,409 @@
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<body>
+  <div class="card">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img
+          src="../../../assets/images/health-login.jpg"
+          class="card-img"
+          alt="login"
+        />
+      </div>
+      <div class="col-md-8">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="card-header text-white bg-info">Alta de Usuario</div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="userProfile"
+                  >Tipo de Usuario</label
+                >
+              </div>
+              <div class="form-control">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="radioPaciente"
+                    value="paciente"
+                    [(ngModel)]="selectedOption"
+                    (ngModelChange)="onRadioChange($event)"
+                    [disabled]="perfil == 'admin'"
+                  />
+                  <label class="form-check-label" for="radioPaciente"
+                    >Paciente</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="radioEspecialista"
+                    value="especialista"
+                    [(ngModel)]="selectedOption"
+                    (ngModelChange)="onRadioChange($event)"
+                    [disabled]="perfil == 'admin'"
+                  />
+                  <label class="form-check-label" for="radioEspecialista"
+                    >Especialista</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="radioAdmin"
+                    value="admin"
+                    [(ngModel)]="selectedOption"
+                    (ngModelChange)="onRadioChange($event)"
+                    [disabled]="perfil != 'admin'"
+                  />
+                  <label class="form-check-label" for="radioAdmin"
+                    >Administrador</label
+                  >
+                </div>
+              </div>
+            </div>
+            <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">Nombre</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombre"
+                  formControlName="nombre"
+                  placeholder="Nombre "
+                  aria-label="nombre"
+                  aria-describedby="basic-addon1"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['nombre'].hasError('required') &&
+                    signUpForm.controls['nombre'].touched
+                  "
+                >
+                  <small class="error-message"> Debe ingresar Nombre </small>
+                </ng-container>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="lastname">Apellido</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="apellido"
+                  id="apellido"
+                  placeholder="Apellido"
+                  aria-label="Apellido"
+                  aria-describedby="lastname"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['apellido'].hasError('required') &&
+                    signUpForm.controls['apellido'].touched
+                  "
+                >
+                  <small class="error-message"> Debe ingresar Apellido </small>
+                </ng-container>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="lastname">Edad</span>
+                </div>
+                <input
+                  type="numeric"
+                  class="form-control"
+                  formControlName="edad"
+                  id="edad"
+                  placeholder="Edad"
+                  aria-label="Edad"
+                  aria-describedby="edad"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['edad'].hasError('required') &&
+                    signUpForm.controls['edad'].touched
+                  "
+                >
+                  <small class="error-message"> Debe ingresar Edad </small>
+                </ng-container>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="lastname">DNI:</span>
+                </div>
+                <input
+                  type="numeric"
+                  class="form-control"
+                  formControlName="dni"
+                  id="dni"
+                  placeholder="DNI"
+                  aria-label="DNI"
+                  aria-describedby="dni"
+                />
+                <ng-container
+                  *ngIf="
+                    (signUpForm.controls['dni'].hasError('required') ||
+                      signUpForm.controls['dni'].hasError('min') ||
+                      signUpForm.controls['dni'].hasError('max')) &&
+                    signUpForm.controls['dni'].touched
+                  "
+                >
+                  <small class="error-message">
+                    Debe ingresar una DNI valido
+                  </small>
+                </ng-container>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon2">Correo</span>
+                </div>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  placeholder="e-mail"
+                  aria-label="Usuario"
+                  aria-describedby="basic-addon2"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['email'].hasError('email') &&
+                    signUpForm.controls['email'].touched
+                  "
+                >
+                  <small class="error-message">
+                    Debe ingresar un correo valido
+                  </small>
+                </ng-container>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon4"
+                    >Imagen de Perfil</span
+                  >
+                </div>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="imagenDePerfil"
+                  name="imagenDePerfil"
+                  formControlName="imagenDePerfil"
+                  placeholder="Imagen de Perfil..."
+                  (change)="subirImagen($event, 'perfil')"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['imagenDePerfil'].hasError(
+                      'required'
+                    ) && signUpForm.controls['imagenDePerfil'].touched
+                  "
+                >
+                  <small class="error-message">
+                    Ingrese una imagen de perfil
+                  </small>
+                </ng-container>
+              </div>
+              <div *ngIf="perfil == 'paciente'" class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon4"
+                    >Foto de Paciente</span
+                  >
+                </div>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="fotoPaciente"
+                  name="fotoPaciente"
+                  formControlName="fotoPaciente"
+                  placeholder="Subir foto..."
+                  (change)="subirImagen($event, 'fotoPaciente')"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['fotoPaciente'].hasError('required') &&
+                    signUpForm.controls['fotoPaciente'].touched
+                  "
+                >
+                  <small class="error-message"> Ingrese una foto </small>
+                </ng-container>
+              </div>
+              <div *ngIf="perfil == 'paciente'" class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="obraSocial"
+                    >Obra Social</span
+                  >
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="obraSocial"
+                  id="obraSocial"
+                  placeholder="Obra Social"
+                  aria-label="obraSocial"
+                  aria-describedby="obraSocial"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['obraSocial'].hasError('required') &&
+                    signUpForm.controls['obraSocial'].touched
+                  "
+                >
+                  <small class="error-message"> Ingrese una Obra Social </small>
+                </ng-container>
+              </div>
+
+              <div class="input-group mb-3" *ngIf="perfil == 'especialista'">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="specialitySelect"
+                    >Especialidades</label
+                  >
+                </div>
+                <select
+                  class="custom-select"
+                  id="specialitySelect"
+                  (change)="agregarEspecialidad($event)"
+                >
+                  <option value="" selected disabled hidden>
+                    Seleccione una Especialidad
+                  </option>
+                  <option
+                    *ngFor="let spec of listaEspecialidades"
+                    [ngValue]="spec"
+                  >
+                    {{ spec.nombre }}
+                  </option>
+                </select>
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="lastname">Agregar</span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="nuevaEspecialidad"
+                  id="nuevaEspecialidad"
+                  placeholder="Nueva Especialidad"
+                  aria-label="nuevaEspecialidad"
+                  aria-describedby="nuevaEspecialidad"
+                />
+                <button type="button" class="btn btn-labeled btn-primary" (click)="EspecialidadAgregada()"><span class="btn-label"><i class="fa fa-check"></i></span>OK</button>
+              </div>
+              <div  class="input-group mb-3" *ngIf="perfil == 'especialista' && especialidadesElegidas.length != 0">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="specialitySelect"
+                    >Especialidades Elegidas</label
+                  >
+                </div>
+                <div *ngIf="especialidadesElegidas.length != 0">
+                  <ul class="list-group">
+                    <li
+                      *ngFor="let spec of especialidadesElegidas"
+                      class="list-group-item"
+                      (click)="quitarEspecialidad(spec)"
+                    >{{spec.nombre}}</li>
+                  </ul>
+                  <small class="text-muted"
+                    >Click para quitar especialidad</small
+                  >
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">Clave</span>
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  formControlName="password"
+                  placeholder="Clave"
+                  aria-label="Clave"
+                  aria-describedby="basic-addon1"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['password'].hasError('required') &&
+                    signUpForm.controls['password'].touched
+                  "
+                >
+                  <small class="error-message"> Debe ingresar una clave </small>
+                </ng-container>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3"
+                    >Repetir Clave</span
+                  >
+                </div>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="passwordRep"
+                  formControlName="passwordRep"
+                  placeholder="Repetir Clave"
+                  aria-label="Repetir Clave"
+                  aria-describedby="basic-addon1"
+                />
+                <ng-container
+                  *ngIf="
+                    signUpForm.controls['passwordRep'].hasError('required') &&
+                    signUpForm.controls['passwordRep'].touched
+                  "
+                >
+                  <small class="error-message"> Debe ingresar una clave </small>
+                </ng-container>
+              </div>
+              <hr />
+              <!-- <div>
+                <label for="chkDisableCapcha"
+                  >Deshabilitar Captcha
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="chkDisableCapcha"
+                    id="chkDisableCapcha"
+                  />
+                </label>
+              </div> -->
+              <ngx-recaptcha2
+                #captchaElem
+                [siteKey]="siteKey"
+                [useGlobalDomain]="false"
+                formControlName="recaptcha"
+                name="recaptcha"
+                id="recaptcha"
+              >
+              </ngx-recaptcha2>
+              <div class="mx-auto">
+                <button
+                  type="submit"
+                  class="btn btn-outline-info"
+                  shape="round"
+                  size="medium"
+                >
+                  Registrarse
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  routerLink="/login"
+                  shape="round"
+                  size="medium"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
