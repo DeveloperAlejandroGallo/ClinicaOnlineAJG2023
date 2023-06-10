@@ -27,3 +27,25 @@
     // background-image: url('../img/newalgas.svg')
     background-color: rgba(22, 101, 165, 0.616);
 }
+
+.favbutton {
+  transition: all 0.3s ease;
+}
+
+.favbutton .dropdown-menu {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.favbutton:hover .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.user-avatar {
+  width: 40px; /* Ajusta el tamaño deseado para las imágenes de perfil */
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}

@@ -16,13 +16,13 @@ export class ImagenesService {
 
   uploadImage($event: any) {
     const file = $event.target.files[0];
-    console.log('File al subir imagen',file);
+
 
     const imgRef = ref(this.storage, `${file.name}`);
 
     uploadBytes(imgRef, file)
       .then(response => {
-        console.log(response)
+
         this.getImages();
         this.messages.Info('Imagen subida correctamente');
       })

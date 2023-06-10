@@ -8,7 +8,7 @@ export interface Usuario {
   dni: number;
   email: string;
   clave: string;
-  imagenDePerfil: string;
+  foto: string;
   logueado: boolean;
   perfil: string;
 }

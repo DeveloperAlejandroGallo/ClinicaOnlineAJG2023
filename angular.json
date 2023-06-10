@@ -17,6 +17,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "sweetalert2"
+           ],
             "outputPath": "dist/clinica-online-ajg2023",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -40,8 +43,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "8Mb",
+                  "maximumError": "8Mb"
                 },
                 {
                   "type": "anyComponentStyle",

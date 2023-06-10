@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getAuth, sendEmailVerification,createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User  } from "firebase/auth";
+import { getAuth, sendEmailVerification,createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User, onAuthStateChanged  } from "firebase/auth";
 import { UsuarioService } from './usuario.service';
 import { Router } from '@angular/router';
 import { Usuario, UsuarioEspecialista, UsuarioPaciente } from '../models/usuario';
@@ -10,13 +10,17 @@ import { MensajesService } from './mensajes.service';
   providedIn: 'root'
 })
 export class AuthService {
-  estaLogueado: boolean = false;
+
+  sesionActiva: boolean = false;
   redirectUrl?: string;
   public usuarioActual?: Usuario;
 
   constructor(private usrService: UsuarioService,
               private message: MensajesService,
               private router: Router) { }
+
+
+
 
   public iniciarSesion(email:string, password: string) {
 
@@ -34,7 +38,7 @@ export class AuthService {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
-        console.log(userCredential.user)
+
         if(!userCredential.user.emailVerified){
           this.message.Warning("Antes de intentar ingresar debe validar su email");
           this.cerrarSesion();
@@ -77,7 +81,7 @@ export class AuthService {
 
 
   loguear(usr: any) {
-    this.estaLogueado = true;
+    this.sesionActiva = true;
     localStorage.setItem(Constantes.usuarioLocalStorage, JSON.stringify(usr));
     //Registro el ingreso:
       this.message.Info("Bienvenido " + usr.nombre);
@@ -86,14 +90,14 @@ export class AuthService {
   }
 
   public registrarCuenta(user: Usuario | UsuarioEspecialista | UsuarioPaciente) {
-    console.log('registrarCuenta',user.email, user.clave,user.perfil);
+
 
     const auth = getAuth();
 
     createUserWithEmailAndPassword(auth, user.email, user.clave)
     .then((userCredential) => {
       //Lo guardo en la coleccion:
-      console.log('userCredential',user.perfil);
+
       switch(user.perfil){
         case 'admin':
           this.usrService.nuevoAdmin(user);
@@ -108,7 +112,10 @@ export class AuthService {
       sendEmailVerification(auth.currentUser!);
       this.message.Exito(`Usuario ${user.email} registrado correctamente.`);
       setTimeout(() => {
-        this.router.navigate(['/login']);
+        if(user.perfil != 'admin')
+          this.router.navigate(['/login']);
+        else
+          this.router.navigate(['/admin/usuarios']);
       }, 1500);
 
     })
@@ -166,6 +173,8 @@ export class AuthService {
     const auth = getAuth();
 
     return (auth.currentUser != null) && ((this.currentUser() as Usuario).email == auth.currentUser.email);
+
+
   }
 
   public logInfo():Usuario | UsuarioPaciente | UsuarioEspecialista | undefined{
@@ -180,5 +189,24 @@ export class AuthService {
       }
     }
     return user;
+  }
+
+  traeUsuarioLogueado() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        this.usuarioActual = this.usrService.listadoUsuarios?.find(x => x.email == user.email);
+        this.sesionActiva = true;
+        // ...
+      } else {
+        // User is signed out
+        // ...
+
+        this.sesionActiva = false;
+      }
+    });
   }
 }

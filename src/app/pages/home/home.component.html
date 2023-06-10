@@ -1,1 +1,112 @@
-<p>home works!</p>
+<app-nav-bar [usuarioConectado]="usuarioConectado"></app-nav-bar>
+<!-- <app-header></app-header> -->
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Solicitar Turno</h5>
+        <p class="card-text">Busque por especialista o especialidad, para obtener el turno mas proximo.</p>
+        <!-- <a (click)="navegar('/paciente/sacar-turno')" class="btn btn-primary">Ingresar</a> -->
+        <button class="btn btn-primary" (click)="navegar('/paciente/sacar-turno')">Ingresar</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Mis Turnos</h5>
+        <p class="card-text">Verifique y administre sus turnos.</p>
+        <a href="/paciente/sacar-turno" class="btn btn-primary">Ingresar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table">
+  <div *ngIf="usuarioConectado!.perfil == 'paciente'">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card bg-info">
+          <div
+            appChangeColor="steelblue"
+            class="card-body"
+            (click)="navegar('/paciente/sacar-turno')"
+          >
+            <h5 class="card-title text-white btnTit">Solicitar Turno</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card bg-info">
+          <div
+            appChangeColor="steelblue"
+            class="card-body"
+            (click)="navegar('/paciente/ver-turnos')"
+          >
+            <h5 class="card-title text-white btnTit">Ver mis turnos</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="usuarioConectado!.perfil == 'especialista'">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card bg-info">
+          <div
+            appChangeColor="steelblue"
+            class="card-body"
+            (click)="navegar('')"
+          >
+            <h5 class="card-title text-white btnTit">Crear Turnos</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card bg-info">
+          <div
+            appChangeColor="steelblue"
+            class="card-body"
+            (click)="navegar('')"
+          >
+            <h5 class="card-title text-white btnTit">Administrar Turnos</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card bg-info">
+          <div
+            appChangeColor="steelblue"
+            class="card-body"
+            (click)="navegar('')"
+          >
+            <h5 class="card-title text-white btnTit">Atender</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="usuarioConectado!.perfil == 'admin'">
+    <div class="row">
+      <div class="col">
+        <div class="card bg-info">
+          <div
+            appChangeColor="steelblue"
+            class="card-body"
+            (click)="navegar('')"
+          >
+            <h5 class="card-title text-white btnTit">Aprobar Profesional</h5>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-6">
+      <div class="card bg-info">
+        <div appChangeColor="steelblue" class="card-body" (click)="setAppo()">
+          <h5 class="card-title text-white btnTit">Crear Especialidad</h5>
+        </div>
+      </div>
+    </div> -->
+    </div>
+  </div>
+</div>

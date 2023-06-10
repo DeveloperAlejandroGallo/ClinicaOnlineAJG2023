@@ -28,9 +28,9 @@
                     name="inlineRadioOptions"
                     id="radioPaciente"
                     value="paciente"
-                    [(ngModel)]="selectedOption"
+                    [(ngModel)]="perfilInput"
                     (ngModelChange)="onRadioChange($event)"
-                    [disabled]="perfil == 'admin'"
+                    [disabled]="perfilInput != 'paciente'"
                   />
                   <label class="form-check-label" for="radioPaciente"
                     >Paciente</label
@@ -43,9 +43,9 @@
                     name="inlineRadioOptions"
                     id="radioEspecialista"
                     value="especialista"
-                    [(ngModel)]="selectedOption"
+                    [(ngModel)]="perfilInput"
                     (ngModelChange)="onRadioChange($event)"
-                    [disabled]="perfil == 'admin'"
+                    [disabled]="perfilInput != 'especialista'"
                   />
                   <label class="form-check-label" for="radioEspecialista"
                     >Especialista</label
@@ -58,9 +58,9 @@
                     name="inlineRadioOptions"
                     id="radioAdmin"
                     value="admin"
-                    [(ngModel)]="selectedOption"
+                    [(ngModel)]="perfilInput"
                     (ngModelChange)="onRadioChange($event)"
-                    [disabled]="perfil != 'admin'"
+                    [disabled]="perfilInput != 'admin'"
                   />
                   <label class="form-check-label" for="radioAdmin"
                     >Administrador</label
@@ -212,7 +212,7 @@
                   </small>
                 </ng-container>
               </div>
-              <div *ngIf="perfil == 'paciente'" class="input-group mb-3">
+              <div *ngIf="perfilInput == 'paciente'" class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon4"
                     >Foto de Paciente</span
@@ -236,7 +236,7 @@
                   <small class="error-message"> Ingrese una foto </small>
                 </ng-container>
               </div>
-              <div *ngIf="perfil == 'paciente'" class="input-group mb-3">
+              <div *ngIf="perfilInput == 'paciente'" class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="obraSocial"
                     >Obra Social</span
@@ -261,7 +261,7 @@
                 </ng-container>
               </div>
 
-              <div class="input-group mb-3" *ngIf="perfil == 'especialista'">
+              <div class="input-group mb-3" *ngIf="perfilInput == 'especialista'">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="specialitySelect"
                     >Especialidades</label
@@ -296,7 +296,7 @@
                 />
                 <button type="button" class="btn btn-labeled btn-primary" (click)="EspecialidadAgregada()"><span class="btn-label"><i class="fa fa-check"></i></span>OK</button>
               </div>
-              <div  class="input-group mb-3" *ngIf="perfil == 'especialista' && especialidadesElegidas.length != 0">
+              <div  class="input-group mb-3" *ngIf="perfilInput == 'especialista' && especialidadesElegidas.length != 0">
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="specialitySelect"
                     >Especialidades Elegidas</label
@@ -384,21 +384,13 @@
               <div class="mx-auto">
                 <button
                   type="submit"
-                  class="btn btn-outline-info"
+                  class="btn btn-outline-primary"
                   shape="round"
                   size="medium"
                 >
                   Registrarse
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary"
-                  routerLink="/login"
-                  shape="round"
-                  size="medium"
-                >
-                  Login
-                </button>
+
               </div>
             </form>
           </div>

@@ -1,0 +1,113 @@
+<app-nav-bar></app-nav-bar>
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <img class="d-block mx-auto mb-4" src="../../../../assets/images/icons/users2.png" alt="" width="200px" height="200px" />
+      <h2>Administración de Usuarios</h2>
+      <p class="lead">
+        Vea la información de los pacientes, autorice nuevos especialistas y dé
+        de alta nuevos administradores.
+      </p>
+    </div>
+
+    <div class="row g-5">
+      <button class="w-100 btn btn-primary btn-lg" type="submit">
+        Alta Administrador
+      </button>
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">Usuarios</span>
+          <span class="badge bg-primary rounded-pill">{{
+            listaUsuarios.length
+            }}</span>
+        </h4>
+        <!-- ToDo: Hace de esto un componente -->
+        <ul class="list-group mb-3">
+          <li *ngFor="let usr of listaUsuariosEspecialistas;let i = index" class="list-group-item d-flex justify-content-between lh-sm"
+            (click)="seleccionarUsuario(i)" appHighLigth="" >
+            <div>
+              <h6 class="my-0">{{ usr.nombre }}, {{ usr.apellido }}</h6>
+              <small class="text-muted">{{ usr.email }}</small>
+              <h6 class="text-muted">{{ usr.perfil.toUpperCase() }}</h6>
+              <small *ngIf="usr.perfil == 'especialista'">
+                <div class="text-success" *ngIf="usr.cuentaAprobada">
+                  <p class="my-0"><b>Aprobado</b></p>
+                </div>
+                <div class="text-warning" *ngIf="!usr.cuentaAprobada">
+                  <p class="my-0"><b>Pendiente aprobación</b></p>
+                </div>
+              </small>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <h4 class="mb-3">Información del Usuario</h4>
+        <div class="form needs-validation" >
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" [(ngModel)]="nombre" id="nombre" placeholder="" value="" />
+            </div>
+
+            <div class="col-sm-6">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" [(ngModel)]="apellido" id="apellido" placeholder="" value="" />
+            </div>
+
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" [(ngModel)]="email" id="email" placeholder="you@example.com" />
+            </div>
+
+            <div class="col-6">
+              <label for="dni" class="form-label">DNI</label>
+              <input type="text" class="form-control" [(ngModel)]="dni" id="dni" placeholder="99999999" />
+            </div>
+
+            <div class="col-6">
+              <label for="edad" class="form-label">Edad</label>
+              <input type="text" class="form-control" [(ngModel)]="edad" id="edad" placeholder="Edad" />
+            </div>
+            <div class="col-12">
+              <img [src]="imagenDePerfil" alt="imagen de perfil" class="imagen" />
+            </div>
+            <!--  Paciente -->
+            <hr class="my-4" />
+            <div *ngIf="perfil == 'paciente'">
+              <div class="col-6">
+                <label for="obrasocial" class="form-label">Obra Social</label>
+                <input type="text" class="form-control" [(ngModel)]="obraSocial" id="obrasocial"
+                  placeholder="Obra Social" />
+              </div>
+
+              <div class="col-12" *ngIf="perfil == 'paciente'">
+                <img [src]="fotoPaciente" alt="foto paciente" class="imagen" />
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="perfil == 'especialista'">
+            <hr class="my-4" />
+
+            <h4 class="mb-3">Especialidades</h4>
+
+            <div class="col-12">
+              <ul *ngFor="let esp of especialidades">
+                <li>{{ esp.nombre.toUpperCase() }}</li>
+              </ul>
+            </div>
+
+            <hr class="my-4" />
+
+            <button class="w-100 btn btn-outline-danger btn-lg" type="submit" [disabled]="cuentaAprobada">
+              Aprobar Especialista
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="form-validation.js"></script>

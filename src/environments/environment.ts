@@ -10,6 +10,6 @@ export const environment = {
     messagingSenderId: '142062972876',
   },
   recaptcha: {
-    siteKey: '6Lf9AHQmAAAAACNMKvkNQoVVV1264xKnU0Uxmrd2' //'6LfRrXEmAAAAAOs2uUGLW6PR5ZW2dasWHd8p1w7h',
+    siteKey:'6LfRrXEmAAAAAOs2uUGLW6PR5ZW2dasWHd8p1w7h', //'6Lf9AHQmAAAAACNMKvkNQoVVV1264xKnU0Uxmrd2'
   },
 };

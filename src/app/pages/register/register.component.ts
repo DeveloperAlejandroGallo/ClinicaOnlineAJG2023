@@ -18,7 +18,7 @@ import { environment } from 'src/environments/environment';
 })
 export class RegisterComponent implements OnInit{
 
-  @Input() perfil: string =  Constantes.perfilAdmin;
+  @Input() perfilInput: string =  "";
 
   signUpForm!: FormGroup;
   usuarioConectado!: Usuario | UsuarioPaciente | UsuarioEspecialista | undefined;
@@ -34,9 +34,6 @@ export class RegisterComponent implements OnInit{
   siteKey = environment.recaptcha.siteKey;
 
   public chkDisableCapcha: boolean = false;
-
-  selectedOption: string = Constantes.perfilAdmin;
-
 
 
   constructor(private router: Router,
@@ -91,9 +88,7 @@ export class RegisterComponent implements OnInit{
     }
 
     onRadioChange(event: any) {
-      this.perfil = this.selectedOption;
       this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
-      console.log('this.perfil',this.perfil)
     }
 
   ngOnInit(): void {
@@ -127,12 +122,11 @@ export class RegisterComponent implements OnInit{
     let password = this.password?.value;
     let edad = this.edad?.value;
     let dni = this.dni?.value;
-    let tipo = this.perfil;
+    let tipo = this.perfilInput;
     let obraSocial = this.obraSocial?.value;
     let fotoPaciente = "";
     let imagenDePerfil = "";
 
-    console.log('tipo',tipo, this.perfil)
 
     let img = this.imagenesService.listaImagenes.filter(x=>x.nombre == this.imgPaciente)[0];
     if(img)
@@ -161,18 +155,16 @@ export class RegisterComponent implements OnInit{
       dni: dni,
       email: email,
       clave: password,
-      imagenDePerfil: imagenDePerfil,
+      foto: imagenDePerfil,
       logueado: false,
       perfil: tipo
     };
 
-    console.log('reg tipo',tipo, this.perfil)
-    console.log('reg usr',usr)
 
     switch(tipo){
       case Constantes.perfilAdmin:
-        usr.perfil = this.perfil;
-        console.log('usr admin',usr)
+        usr.perfil = this.perfilInput;
+
         this.auth.registrarCuenta(usr);
         break;
       case Constantes.perfilPaciente:
@@ -194,6 +186,7 @@ export class RegisterComponent implements OnInit{
           cuentaAprobada: false
         };
         this.auth.registrarCuenta(usrDoctor);
+        this.signUpForm.reset();
         break;
     }
 
@@ -215,14 +208,14 @@ export class RegisterComponent implements OnInit{
     }else{
       this.imgPaciente = file.name;
     }
-    console.log(file);
+
     this.imagenesService.uploadImage($event);
   }
 
   agregarEspecialidad(e:any) {
 
     this.especialidadesElegidas.push(this.especialidadesService.listadoEspecialidades.filter(x=>x.nombre == e.target.value)[0]);
-    console.log('especialidadesElegidas',this.especialidadesElegidas)
+
   }
 
   quitarEspecialidad(especialidad:Especialidad){

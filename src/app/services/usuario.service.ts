@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionChanges, collectionData, CollectionReference, deleteDoc, doc, DocumentData, Firestore, getDoc, getDocs, setDoc, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionChanges, collectionData, CollectionReference, deleteDoc, doc, DocumentData, Firestore, getDoc, getDocs, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { Usuario, UsuarioEspecialista, UsuarioPaciente } from '../models/usuario';
+import { Observable } from 'rxjs';
 
 
 
@@ -17,6 +18,14 @@ export class UsuarioService {
    }
 
   listadoUsuarios!: Array<UsuarioEspecialista | UsuarioPaciente | Usuario>;
+
+
+  get allUsers$(): Observable<Usuario[]> {
+    const ref = collection(this.firestore, 'usuarios');
+    const queryAll = query(ref);
+    return collectionData(queryAll) as Observable<Usuario[]>;
+  }
+
 
 //Genericos
   traer(){
@@ -40,7 +49,6 @@ export class UsuarioService {
 //Usuario
   nuevoAdmin(usuario: Usuario) {
 
-    console.log('usuario admin',usuario);
     const docuNuevo = doc(this.coleccionUsuarios);
     // addDoc(coleccion, objeto);
     const nuevoId = docuNuevo.id;
@@ -51,7 +59,7 @@ export class UsuarioService {
       apellido: usuario.apellido,
       email: usuario.email,
       clave: usuario.clave,
-      foto: usuario.imagenDePerfil,
+      foto: usuario.foto,
       esAdmin: true
     });
   }
@@ -67,7 +75,7 @@ export class UsuarioService {
       apellido: usuario.apellido,
       email: usuario.email,
       clave: usuario.clave,
-      foto: usuario.imagenDePerfil,
+      foto: usuario.foto,
       esAdmin: false,
       obraSocial: usuario.obraSocial,
       fotoPaciente: usuario.fotoPaciente,
@@ -86,10 +94,11 @@ export class UsuarioService {
       apellido: usuario.apellido,
       email: usuario.email,
       clave: usuario.clave,
-      foto: usuario.imagenDePerfil,
+      foto: usuario.foto,
       esAdmin: false,
       especialidades: usuario.especialidades,
-      cuentaAprobada: usuario.cuentaAprobada
+      cuentaAprobada: usuario.cuentaAprobada,
+      perfil: usuario.perfil
     });
   }
 
@@ -102,8 +111,9 @@ export class UsuarioService {
       apellido: usuario.apellido,
       email: usuario.email,
       clave: usuario.clave,
-      foto: usuario.imagenDePerfil,
-      esAdmin: true
+      foto: usuario.foto,
+      esAdmin: true,
+      perfil: usuario.perfil
     });
   }
   actualizarPaciente(usuario: UsuarioPaciente) {
@@ -115,10 +125,11 @@ export class UsuarioService {
       apellido: usuario.apellido,
       email: usuario.email,
       clave: usuario.clave,
-      foto: usuario.imagenDePerfil,
+      foto: usuario.foto,
       esAdmin: false,
       obraSocial: usuario.obraSocial,
       fotoPaciente: usuario.fotoPaciente,
+      perfil: usuario.perfil
     });
   }
 
@@ -131,10 +142,11 @@ export class UsuarioService {
       apellido: usuario.apellido,
       email: usuario.email,
       clave: usuario.clave,
-      foto: usuario.imagenDePerfil,
+      foto: usuario.foto,
       esAdmin: false,
       especialidades: usuario.especialidades,
-      cuentaAprobada: usuario.cuentaAprobada
+      cuentaAprobada: usuario.cuentaAprobada,
+      perfil: usuario.perfil
     });
   }
 

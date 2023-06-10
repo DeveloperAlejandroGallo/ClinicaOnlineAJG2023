@@ -109,10 +109,18 @@
   </div>
 </div>
 
-<!-- <div *ngIf="showError" class="card text-center text-white bg-danger mb-3" style="width: 18rem;">
-    <div class="card-header">Error</div>
-    <div class="card-body">
-        <h5 class="card-title">Verificar Email</h5>
-        <p class="card-text">Por favor ingrese a su correo y verifique su email.</p>
-    </div>
-</div> -->
+<div class="favbutton position-fixed bottom-0 start-0 m-3">
+  <button class="btn btn-primary rounded-circle btn-lg " type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-user"></i>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="userDropdown">
+    <li><a class="dropdown-item" (click)="ingresoAutomatico('admin')"><img class="user-avatar" [src]="adminIco" alt="Admin"></a></li>
+    <li><a class="dropdown-item" (click)="ingresoAutomatico('especialista1')"><img class="user-avatar" [src]="especialista1Ico" alt="Doc 1"></a></li>
+    <li><a class="dropdown-item" (click)="ingresoAutomatico('especialista2')"><img class="user-avatar" [src]="especialista2Ico" alt="Doc 2"></a></li>
+    <li><a class="dropdown-item" (click)="ingresoAutomatico('paciente1')"><img class="user-avatar" [src]="paciente1Ico" alt="Paciente 1"></a></li>
+    <li><a class="dropdown-item" (click)="ingresoAutomatico('paciente2')"><img class="user-avatar" [src]="paciente2Ico" alt="Paciente 2"></a></li>
+    <li><a class="dropdown-item" (click)="ingresoAutomatico('paciente3')"><img class="user-avatar" [src]="paciente3Ico" alt="Paciente 3"></a></li>
+  </ul>
+</div>
+
+
