@@ -1,8 +1,8 @@
 <app-nav-bar></app-nav-bar>
-<div class="container">
+<div class="container" >
   <main>
-    <div class="py-5 text-center">
-      <img class="d-block mx-auto mb-4" src="../../../../assets/images/icons/users2.png" alt="" width="200px" height="200px" />
+    <div class="py-5 text-center" >
+      <img class="d-block mx-auto mb-4" src="../../../../assets/images/icons/users2.png" alt="" width="100px" height="100px"  />
       <h2>Administración de Usuarios</h2>
       <p class="lead">
         Vea la información de los pacientes, autorice nuevos especialistas y dé
@@ -11,7 +11,7 @@
     </div>
 
     <div class="row g-5">
-      <button class="w-100 btn btn-primary btn-lg" type="submit">
+      <button class="w-100 btn btn-primary btn-lg" (click)="altaAdmin()">
         Alta Administrador
       </button>
       <div class="col-md-5 col-lg-4 order-md-last">
@@ -100,7 +100,7 @@
 
             <hr class="my-4" />
 
-            <button class="w-100 btn btn-outline-danger btn-lg" type="submit" [disabled]="cuentaAprobada">
+            <button class="w-100 btn btn-outline-danger btn-lg" type="submit" [disabled]="cuentaAprobada" (click)="aprobarCuenta()">
               Aprobar Especialista
             </button>
           </div>

@@ -27,6 +27,17 @@ import { AdminUsuariosComponent } from './pages/admin/admin-usuarios/admin-usuar
 import { ErrorComponent } from './pages/error/error.component';
 import { HighLigthDirective } from './directives/high-ligth.directive';
 import { RegisterMenuComponent } from './pages/register-menu/register-menu.component';
+import { TurnosTablaComponent } from './components/turnos-tabla/turnos-tabla.component';
+import { TurnosComponent } from './pages/turnos/turnos.component';
+import { UsuarioTurnoComponent } from './pages/usuario/usuario-turno/usuario-turno.component';
+import { FiltroTurnosPipe } from './pipes/filtro-turnos.pipe';
+import { UsuarioPerfilComponent } from './pages/usuario/usuario-perfil/usuario-perfil.component';
+import { FilterTurnosPendientesPipe } from './pipes/filter-turnos-pendientes.pipe';
+import { UsuariosTablaComponent } from './components/usuarios-tabla/usuarios-tabla.component';
+import { TimestampADatePipe } from './pipes/timestamp-adate.pipe';
+import { HoverZoomDirective } from './directives/hover-zoom.directive';
+import { DateisoToDatePipe } from './pipes/dateiso-to-date.pipe';
+
 
 
 @NgModule({
@@ -40,7 +51,17 @@ import { RegisterMenuComponent } from './pages/register-menu/register-menu.compo
     AdminUsuariosComponent,
     ErrorComponent,
     HighLigthDirective,
-    RegisterMenuComponent
+    RegisterMenuComponent,
+    TurnosTablaComponent,
+    TurnosComponent,
+    UsuarioTurnoComponent,
+    FiltroTurnosPipe,
+    UsuarioPerfilComponent,
+    FilterTurnosPendientesPipe,
+    UsuariosTablaComponent,
+    TimestampADatePipe,
+    HoverZoomDirective,
+    DateisoToDatePipe
   ],
   imports: [
     AppRoutingModule,

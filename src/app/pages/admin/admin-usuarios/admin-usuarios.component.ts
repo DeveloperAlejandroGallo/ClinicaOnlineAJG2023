@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Usuario, UsuarioEspecialista, UsuarioPaciente } from 'src/app/models/usuario';
 import { Especialidad } from 'src/app/models/especialidad';
+import { Router } from '@angular/router';
+import { MensajesService } from 'src/app/services/mensajes.service';
 
 @Component({
   selector: 'app-admin-usuarios',
@@ -27,27 +29,29 @@ export class AdminUsuariosComponent implements OnInit{
   especialidades! : Array<Especialidad>;
   cuentaAprobada! : boolean;
 
+  usuarioSeleccionado: Usuario | UsuarioEspecialista | UsuarioPaciente | undefined;
 
-  constructor(private usuariosSrv: UsuarioService){
+  constructor(private usuariosSrv: UsuarioService,
+              private router: Router,
+              private mensajeSrv: MensajesService) { }
 
-  }
+
 
   ngOnInit(): void {
     this.listaUsuariosEspecialistas = this.usuariosSrv.listadoUsuarios as Array<UsuarioEspecialista>;
     this.listaUsuarios = this.usuariosSrv.listadoUsuarios;
-    console.log('listaUsuarios', this.listaUsuarios)
+
   }
 
-
+  altaAdmin(){
+    // this.router.navigate(['/registro'], { queryParams: { perfil: 'admin' } });
+    this.router.navigate(['/registro', 'admin']);
+  }
 
   seleccionarUsuario(i: number){
 
-    console.log(this.listaUsuarios[i])
-    console.log(this.listaUsuariosEspecialistas[i])
-
-
-    let usuario = this.listaUsuarios[i];
-
+    this.usuarioSeleccionado = this.listaUsuarios[i];
+    let usuario = this.usuarioSeleccionado;
 
     this.nombre = usuario.nombre;
     this.apellido = usuario.apellido;
@@ -68,7 +72,12 @@ export class AdminUsuariosComponent implements OnInit{
          this.cuentaAprobada = (usuario as UsuarioEspecialista).cuentaAprobada;
         break;
     }
-    console.log(this.fotoPaciente);
-    console.log(this.especialidades);
+
+  }
+
+  aprobarCuenta(){
+    this.usuariosSrv.aprobarCuenta(this.usuarioSeleccionado as UsuarioEspecialista);
+    this.mensajeSrv.Exito('Cuenta aprobada');
+    this.cuentaAprobada = true;
   }
 }

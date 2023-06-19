@@ -5,3 +5,9 @@ Secret key: 6LfRrXEmAAAAAGy___jgu8S25Q1vklfSSMkyMIih
 Localhost
 Site key:   6Lf9AHQmAAAAACNMKvkNQoVVV1264xKnU0Uxmrd2
 Secret key: 6Lf9AHQmAAAAAGNulT44ShgtkdSBrKAE611KTXcS
+
+
+-----
+CaptchaV2
+Site key:   6Lf54agmAAAAAMeK3clBSle4sM5L80wo7WCUBazE
+Secret key: 6Lf54agmAAAAAIJS4_B_dEvZNPWzTgpaLEV3l7Fw

@@ -1,0 +1,89 @@
+<h4 class="d-flex justify-content-between align-items-center mb-3">
+  <span class="text-primary">Turnos</span>
+  <span class="badge bg-primary rounded-pill">{{
+    listadoDeTurnos.length
+    }}</span>
+</h4>
+<div class="mb-3">
+  <input type="text" class="form-control" placeholder="Filtrar por especialidad y {{ pacienteOEspecialista }}"
+    [(ngModel)]="filtroNombre" />
+</div>
+<ul class="list-group mb-3">
+  <li *ngFor="
+      let turno of listadoDeTurnos
+        | filtroTurnos : usuarioConectado : filtroNombre;
+      let i = index"
+      class="list-group-item d-flex justify-content-between lh-sm" appHighLigth="">
+    <div>
+      <div class="d-flex justify-content-between align-items-center" *ngIf="usuarioConectado?.perfil != 'paciente'">
+        <h6 class="my-0">Paciente:</h6>
+        {{ turno.paciente!.nombre }}, {{ turno.paciente!.apellido }}
+      </div>
+      <div class="d-flex justify-content-between align-items-center" *ngIf="usuarioConectado?.perfil != 'especialista'">
+        <h6 class="my-0">Especialista:</h6>
+         {{ turno.especialista.nombre }}, {{ turno.especialista.apellido }}
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="my-0">Especialidad:</h6>
+         {{ turno.especialidad.nombre }}
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="my-0">Fecha:</h6>
+        <small class="text-muted">
+          {{turno.fechaInicio | dateisoToDate  | date: "yyyy-MM-dd"}}</small>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="my-0">Hora:</h6>
+        <small class="text-muted">
+          {{turno.fechaInicio | dateisoToDate  | date: "HH:mm"}}</small>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="badge bg-primary rounded-pill align-self-end"><b>{{ turno.estado.toUpperCase() }}</b></span>
+      </div>
+      <div *ngIf="usuarioConectado?.perfil == 'admin'" class="d-flex justify-content-between align-items-center mt-3">
+        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning"
+          (click)="accionSeleccionada('Cancelar',turno)">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-3"
+        *ngIf="usuarioConectado?.perfil == 'paciente'">
+        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning"
+          (click)="accionSeleccionada('Cancelar',turno)">
+          <i class="fas fa-times"></i>
+        </button>
+        <button *ngIf="verCompletarEncuesta(turno)" class="btn btn-primary" (click)="accionSeleccionada('LlenarEncuesta',turno)">
+          <i class="fas fa-poll"></i>
+        </button>
+        <button *ngIf="verCalificarAtencion(turno)" class="btn btn-danger" (click)="accionSeleccionada('Calificar',turno)">
+          <i class="fas fa-star"></i>
+        </button>
+        <button *ngIf="verResenia(turno)" class="btn btn-dark" (click)="accionSeleccionada('Reseniar',turno)">
+          <i class="fas fa-comment"></i>
+        </button>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-3"
+        *ngIf="usuarioConectado?.perfil == 'especialista'">
+        <button *ngIf="verAceptarTurnoEspecialista(turno)" class="btn btn-warning"
+          (click)="accionSeleccionada('Cancelar',turno)">
+          <i class="fas fa-times"></i>
+        </button>
+        <button *ngIf="verAceptarTurnoEspecialista(turno)" class="btn btn-primary"
+          (click)="accionSeleccionada('Aceptar',turno)">
+          <i class="fas fa-check"></i>
+        </button>
+        <button *ngIf="verRechazarTurnoEspecialista(turno)" class="btn btn-danger"
+          (click)="accionSeleccionada('Rechazar',turno)">
+          <i class="fas fa-ban"></i>
+        </button>
+        <button *ngIf="verFinalizarTurnoEspecialista(turno)" class="btn btn-success"
+          (click)="accionSeleccionada('Finalizar',turno)">
+          <i class="fas fa-check-circle"></i>
+        </button>
+        <button *ngIf="verResenia(turno)" class="btn btn-dark" (click)="accionSeleccionada('Reseniar',turno)">
+          <i class="fas fa-comment"></i>
+        </button>
+      </div>
+    </div>
+  </li>
+</ul>

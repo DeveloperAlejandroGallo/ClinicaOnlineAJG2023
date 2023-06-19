@@ -1,0 +1,20 @@
+.rating {
+  color: gold; /* Color de las estrellas */
+  font-size: 24px; /* Tamaño de las estrellas */
+}
+
+.star {
+  display: inline-block;
+  width: 20px; /* Tamaño de cada estrella */
+  height: 20px;
+  background-image: url('../../../../assets/images/icons/star0.png'); /* Imagen de estrella vacía */
+  background-size: cover;
+}
+
+.star.filled {
+  background-image: url('../../../../assets/images/icons/star0.png'); /* Imagen de estrella llena */
+}
+
+.container {
+  margin-top: 20px;
+}

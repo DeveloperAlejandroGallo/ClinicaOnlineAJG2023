@@ -26,8 +26,12 @@ export class NavBarComponent implements OnInit {
       this.logueado = this.authService.logueado();
     }
 
+    onload = () => { this.ngOnInit(); }
 
+  }
 
+  irAPagina(pagina: string) {
+    this.router.navigate([pagina]);
   }
 
   cerrarSesion() {

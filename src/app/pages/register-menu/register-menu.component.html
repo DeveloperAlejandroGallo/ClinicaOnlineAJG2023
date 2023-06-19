@@ -1,86 +1,70 @@
-<app-nav-bar></app-nav-bar>
 <div class="container">
-  <div *ngIf="!verMenu">
-    <app-register [perfilInput]="perfilSeleccionado"></app-register>
-  </div>
-  <div *ngIf="verMenu">
-    <div class="card">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          <img
-            src="../../../assets/images/health-login.jpg"
-            class="card-img"
-            alt="login"
-          />
-        </div>
-        <div class="col-md-8">
-          <div class="card text-center">
-            <div class="card-body">
-              <div class="card-header text-white bg-info">Tipo de Registro</div>
-              <form>
-                <div class="container">
-                  <div class="row h-25">
-                    <div class="col-2"></div>
-                    <div class="col-10">
-                      <div
-                        class="card"
-                        style="background-color: lightgray; border-radius: 10px"
-                        (click)="seleccion('especialista')"
-                      >
-                        <div class="row h-100 align-items-center">
-                          <div class="col-12 col-sm-12">
-                            <img
-                              src="../../../assets/images/icons/doctor.png"
-                              class="img-fluid image-rectangle"
-                            />
-                          </div>
+  <div class="card">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img
+          src="../../../assets/images/health-login.jpg"
+          class="card-img"
+          alt="login"
+        />
+      </div>
+      <div class="col-md-8">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="card-header text-white bg-info">Tipo de Registro</div>
+            <form>
+              <div class="container">
+                <div class="row h-25">
+                  <div class="col-2"></div>
+                  <div class="col-10">
+                    <div
+                      class="card"
+                      style="background-color: lightgray; border-radius: 10px"
+                      (click)="seleccion('especialista')"
+                    >
+                      <div class="row h-100 align-items-center">
+                        <div class="col-12 col-sm-12">
+                          <img
+                            src="../../../assets/images/icons/doctor.png"
+                            class="img-fluid image-rectangle"
+                          />
                         </div>
                       </div>
                     </div>
-                    <div class="col-2"></div>
                   </div>
-
-                  <hr />
-                  <br />
-
-                  <div class="row h-25">
-                    <div class="col-2"></div>
-                    <div class="col-10">
-                      <div
-                        class="card"
-                        style="background-color: lightgray; border-radius: 10px"
-                        (click)="seleccion('paciente')"
-                      >
-                        <div class="row h-100 align-items-center">
-                          <div class="col-12 col-sm-12">
-                            <img
-                              src="../../../assets/images/icons/pacientes.png"
-                              class="img-fluid image-rectangle"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-2"></div>
-                  </div>
+                  <div class="col-2"></div>
                 </div>
-              </form>
-            </div>
+
+                <hr />
+                <br />
+
+                <div class="row h-25">
+                  <div class="col-2"></div>
+                  <div class="col-10">
+                    <div
+                      class="card"
+                      style="background-color: lightgray; border-radius: 10px"
+                      (click)="seleccion('paciente')"
+                    >
+                      <div class="row h-100 align-items-center">
+                        <div class="col-12 col-sm-12">
+                          <img
+                            src="../../../assets/images/icons/pacientes.png"
+                            class="img-fluid image-rectangle"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <button
-    *ngIf="!verMenu"
-    type="button"
-    class="btn btn-warning align-items-end"
-    shape="round"
-    size="medium"
-    (click)="volver()"
-  >
-    Volver
-  </button>
   <button
     *ngIf="verMenu"
     type="button"

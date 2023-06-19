@@ -1,9 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Constantes } from 'src/app/models/constantes';
 import { Especialidad } from 'src/app/models/especialidad';
-import { Usuario, UsuarioEspecialista, UsuarioPaciente } from 'src/app/models/usuario';
+import {
+  Usuario,
+  UsuarioEspecialista,
+  UsuarioPaciente,
+} from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { EspecialidadesService } from 'src/app/services/especialidades.service';
 import { ImagenesService } from 'src/app/services/imagenes.service';
@@ -14,98 +18,107 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit{
-
-  @Input() perfilInput: string =  "";
+export class RegisterComponent implements OnInit {
+  perfilInput: string = '';
 
   signUpForm!: FormGroup;
-  usuarioConectado!: Usuario | UsuarioPaciente | UsuarioEspecialista | undefined;
+  usuarioConectado!:
+    | Usuario
+    | UsuarioPaciente
+    | UsuarioEspecialista
+    | undefined;
 
   user!: Usuario | UsuarioPaciente | UsuarioEspecialista | undefined;
   listaEspecialidades!: Array<Especialidad>;
-  especialidadesElegidas:  Array<Especialidad> = [];
+  especialidadesElegidas: Array<Especialidad> = [];
 
-
-  imgPaciente: string = "";
-  imgPerfil: string = "";
+  imgPaciente: string = '';
+  imgPerfil: string = '';
 
   siteKey = environment.recaptcha.siteKey;
 
   public chkDisableCapcha: boolean = false;
 
-
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private auth: AuthService,
     private usrService: UsuarioService,
     private message: MensajesService,
     private imagenesService: ImagenesService,
-    private especialidadesService: EspecialidadesService){
+    private especialidadesService: EspecialidadesService,
+    private activeRoute: ActivatedRoute
+  ) {
+    this.siteKey = environment.recaptcha.siteKey;
+    this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
+    this.perfilInput = this.activeRoute.snapshot.params['perfil']; //.paramMap.get('perfil')!;
 
-      this.siteKey = environment.recaptcha.siteKey;
-      this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
-    }
+  }
 
-    //getters
+  //getters
 
-    get nombre() {
-      return this.signUpForm.get('nombre');
-    }
-    get apellido(){
-      return this.signUpForm.get('apellido');
-    }
-    get edad(){
-      return this.signUpForm.get('edad');
-    }
-    get dni(){
-      return this.signUpForm.get('dni');
-    }
-    get email(){
-      return this.signUpForm.get('email');
-    }
-    get imagenPerfil(){
-      return this.signUpForm.get('imagenPerfil');
-    }
-    get password() {
-      return this.signUpForm.get('password');
-    }
-    get passwordRep() {
-      return this.signUpForm.get('passwordRep');
-    }
-    get tipo(){
-      return this.signUpForm.get('tipo');
-    }
-    get obraSocial(){
-      return this.signUpForm.get('obraSocial');
-    }
-    get fotoPaciente(){
-      return this.signUpForm.get('fotoPaciente');
-    }
+  get nombre() {
+    return this.signUpForm.get('nombre');
+  }
+  get apellido() {
+    return this.signUpForm.get('apellido');
+  }
+  get edad() {
+    return this.signUpForm.get('edad');
+  }
+  get dni() {
+    return this.signUpForm.get('dni');
+  }
+  get email() {
+    return this.signUpForm.get('email');
+  }
+  get imagenPerfil() {
+    return this.signUpForm.get('imagenPerfil');
+  }
+  get password() {
+    return this.signUpForm.get('password');
+  }
+  get passwordRep() {
+    return this.signUpForm.get('passwordRep');
+  }
+  get tipo() {
+    return this.signUpForm.get('tipo');
+  }
+  get obraSocial() {
+    return this.signUpForm.get('obraSocial');
+  }
+  get fotoPaciente() {
+    return this.signUpForm.get('fotoPaciente');
+  }
 
-    get nuevaEspecialidad(){
-      return this.signUpForm.get('nuevaEspecialidad');
-    }
+  get nuevaEspecialidad() {
+    return this.signUpForm.get('nuevaEspecialidad');
+  }
 
-    onRadioChange(event: any) {
-      this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
-    }
+  onRadioChange(event: any) {
+    this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
+  }
 
   ngOnInit(): void {
     this.signUpForm = new FormGroup({
-      nombre: new FormControl('',Validators.required),
-      apellido: new FormControl('',Validators.required),
-      edad: new FormControl('',Validators.required),
-      dni: new FormControl('',[Validators.required, Validators.min(10000000), Validators.max(99999999)]),
+      nombre: new FormControl('', Validators.required),
+      apellido: new FormControl('', Validators.required),
+      edad: new FormControl('', Validators.required),
+      dni: new FormControl('', [
+        Validators.required,
+        Validators.min(10000000),
+        Validators.max(99999999),
+      ]),
       email: new FormControl('', Validators.email),
-      imagenDePerfil: new FormControl('',Validators.required),
-      password: new FormControl('',Validators.min(6)),
-      passwordRep: new FormControl('',Validators.required),
+      imagenDePerfil: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.min(6)),
+      passwordRep: new FormControl('', Validators.required),
       // tipo: new FormControl('',Validators.required),
       //paciente:
       obraSocial: new FormControl(''),
       fotoPaciente: new FormControl(''),
-      recaptcha: new FormControl('',Validators.required),
+      recaptcha: new FormControl(''),
       //Especialista
       nuevaEspecialidad: new FormControl(''),
     });
@@ -113,7 +126,6 @@ export class RegisterComponent implements OnInit{
     this.usuarioConectado = this.auth.logInfo();
     this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
   }
-
 
   onSubmit() {
     let email = this.email?.value;
@@ -124,31 +136,30 @@ export class RegisterComponent implements OnInit{
     let dni = this.dni?.value;
     let tipo = this.perfilInput;
     let obraSocial = this.obraSocial?.value;
-    let fotoPaciente = "";
-    let imagenDePerfil = "";
+    let fotoPaciente = '';
+    let imagenDePerfil = '';
 
+    let img = this.imagenesService.listaImagenes.filter(
+      (x) => x.nombre == this.imgPaciente
+    )[0];
+    if (img) fotoPaciente = img.url;
 
-    let img = this.imagenesService.listaImagenes.filter(x=>x.nombre == this.imgPaciente)[0];
-    if(img)
-      fotoPaciente = img.url;
+    img = this.imagenesService.listaImagenes.filter(
+      (x) => x.nombre == this.imgPerfil
+    )[0];
+    if (img) imagenDePerfil = img.url;
 
-    img = this.imagenesService.listaImagenes.filter(x=>x.nombre == this.imgPerfil)[0];
-    if(img)
-      imagenDePerfil = img.url;
-
-    if(this.existeUsuario(email))
-    {
-      this.message.Warning("El usuario ya se encuentra registrado");
+    if (this.existeUsuario(email)) {
+      this.message.Warning('El usuario ya se encuentra registrado');
       return;
     }
 
-    if(password != this.passwordRep?.value)
-    {
-      this.message.Error("Las contraseñas son distintas ");
+    if (password != this.passwordRep?.value) {
+      this.message.Error('Las contraseñas son distintas ');
       return;
     }
     let usr: Usuario = {
-      id: "",
+      id: '',
       nombre: nombre,
       apellido: apellido,
       edad: edad,
@@ -157,11 +168,10 @@ export class RegisterComponent implements OnInit{
       clave: password,
       foto: imagenDePerfil,
       logueado: false,
-      perfil: tipo
+      perfil: tipo,
     };
 
-
-    switch(tipo){
+    switch (tipo) {
       case Constantes.perfilAdmin:
         usr.perfil = this.perfilInput;
 
@@ -176,67 +186,79 @@ export class RegisterComponent implements OnInit{
         this.auth.registrarCuenta(usrPaciente);
         break;
       case Constantes.perfilEspecialista:
-        if(this.especialidadesElegidas.length == 0){
-          this.message.Info("Debe elegir al menos una especialidad");
+        if (this.especialidadesElegidas.length == 0) {
+          this.message.Info('Debe elegir al menos una especialidad');
           return;
         }
         let usrDoctor: UsuarioEspecialista = {
           ...usr,
           especialidades: this.especialidadesElegidas,
-          cuentaAprobada: false
+          cuentaAprobada: false,
         };
         this.auth.registrarCuenta(usrDoctor);
         this.signUpForm.reset();
         break;
     }
-
-
-
   }
 
-
-  existeUsuario(email: string): boolean{
-
-    let usrBuscado = this.usrService.listadoUsuarios?.find(x=>x.email == email);
-    return usrBuscado != undefined ? true : false ;
+  existeUsuario(email: string): boolean {
+    let usrBuscado = this.usrService.listadoUsuarios?.find(
+      (x) => x.email == email
+    );
+    return usrBuscado != undefined ? true : false;
   }
 
-  subirImagen($event: any, tipo: string){
+  subirImagen($event: any, tipo: string) {
     const file = $event.target.files[0];
-    if(tipo == 'perfil'){
+    if (tipo == 'perfil') {
       this.imgPerfil = file.name;
-    }else{
+    } else {
       this.imgPaciente = file.name;
     }
 
     this.imagenesService.uploadImage($event);
   }
 
-  agregarEspecialidad(e:any) {
-
-    this.especialidadesElegidas.push(this.especialidadesService.listadoEspecialidades.filter(x=>x.nombre == e.target.value)[0]);
-
+  agregarEspecialidad(e: any) {
+    this.especialidadesElegidas.push(
+      this.especialidadesService.listadoEspecialidades.filter(
+        (x) => x.nombre == e.target.value
+      )[0]
+    );
   }
 
-  quitarEspecialidad(especialidad:Especialidad){
-    this.especialidadesElegidas = this.especialidadesElegidas.filter(x => x.id != especialidad.id);
+  quitarEspecialidad(especialidad: Especialidad) {
+    this.especialidadesElegidas = this.especialidadesElegidas.filter(
+      (x) => x.id != especialidad.id
+    );
   }
 
-  EspecialidadAgregada(){
+  EspecialidadAgregada() {
     let espe: Especialidad = {
-      id: "",
+      id: '',
       nombre: this.nuevaEspecialidad?.value,
-      duracionTurno: 30
-    }
+      diasDeAtencion: [false, false, false, false, false, false, false],
+      duracionTurno: 30,
+      consultorio: '',
+    };
     espe.nombre = espe.nombre.toUpperCase();
     this.especialidadesService.nuevaEspecialidad(espe);
 
     setTimeout(() => {
-      this.listaEspecialidades = this.especialidadesService.listadoEspecialidades;
-      this.especialidadesElegidas.push(this.listaEspecialidades.filter(x=>x.nombre == espe.nombre)[0]);
-      this.message.Exito(`Especialidad ${espe.nombre} agreagada correctamente`)
+      this.listaEspecialidades =
+        this.especialidadesService.listadoEspecialidades;
+      this.especialidadesElegidas.push(
+        this.listaEspecialidades.filter((x) => x.nombre == espe.nombre)[0]
+      );
+      this.message.Exito(`Especialidad ${espe.nombre} agreagada correctamente`);
     }, 500);
-
   }
 
+  volver() {
+    if (this.perfilInput == Constantes.perfilAdmin) {
+      this.router.navigate(['/admin/usuarios']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 }

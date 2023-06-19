@@ -16,7 +16,7 @@
             <div class="card-header text-white bg-info">Alta de Usuario</div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <label class="input-group-text" for="userProfile"
+                <label class="input-group-text" for="radioPaciente"
                   >Tipo de Usuario</label
                 >
               </div>
@@ -375,7 +375,6 @@
               <ngx-recaptcha2
                 #captchaElem
                 [siteKey]="siteKey"
-                [useGlobalDomain]="false"
                 formControlName="recaptcha"
                 name="recaptcha"
                 id="recaptcha"
@@ -387,6 +386,7 @@
                   class="btn btn-outline-primary"
                   shape="round"
                   size="medium"
+                  [disabled]="signUpForm.invalid"
                 >
                   Registrarse
                 </button>
@@ -397,5 +397,13 @@
         </div>
       </div>
     </div>
+    <button
+    type="button"
+    class="btn btn-info align-items-end"
+    shape="round"
+    size="medium"
+    (click)="volver()">
+    Volver
+  </button>
   </div>
 </body>

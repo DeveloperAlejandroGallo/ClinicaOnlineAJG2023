@@ -1,0 +1,131 @@
+<app-nav-bar [usuarioConectado]="usuarioConectado"></app-nav-bar>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <h2 class="text-center">Perfil</h2>
+
+      <div class="text-center">
+        <img [src]="usuario.foto" alt="Foto de perfil" width="100" height="100">
+      </div>
+
+      <!-- <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">ID</span>
+          </span>
+          <input type="text" class="form-control" disabled [value]="usuario.id">
+        </div>
+      </div> -->
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">Nombre</span>
+          </span>
+          <input type="text" class="form-control"  [value]="usuario.nombre">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">Apellido</span>
+          </span>
+          <input type="text" class="form-control"  [value]="usuario.apellido">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">Edad</span>
+          </span>
+          <input type="number" class="form-control"  [value]="usuario.edad">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">DNI</span>
+          </span>
+          <input type="number" class="form-control"  [value]="usuario.dni">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">Email</span>
+          </span>
+          <input type="email" class="form-control"  [value]="usuario.email">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">Perfil</span>
+          </span>
+          <input type="text" class="form-control"  [value]="usuario.perfil">
+        </div>
+      </div>
+
+      <div *ngIf="usuario.perfil === 'paciente'" class="text-center">
+        <img [src]="usuario.fotoPaciente" alt="Foto de paciente" width="100" height="100">
+      </div>
+
+      <div *ngIf="usuario.perfil === 'especialista' && usuarioEspecialista.especialidades.length > 0" class="mb-3">
+        <label>Especialidades:</label>
+        <ul>
+          <li *ngFor="let especialidad of usuarioEspecialista.especialidades">{{ especialidad.nombre }}</li>
+        </ul>
+      </div>
+
+      <div *ngIf="usuario.perfil === 'especialista' && usuarioEspecialista.especialidades.length === 0" class="mb-3">
+        <p>No se han registrado especialidades.</p>
+      </div>
+
+      <div *ngIf="usuario.perfil === 'especialista'" class="mb-3">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">Cuenta Aprobada</span>
+          </span>
+          <input type="text" class="form-control" disabled [value]="usuarioEspecialista.cuentaAprobada ? 'Sí' : 'No'">
+        </div>
+      </div>
+
+
+      <div *ngIf="usuario.perfil === 'especialista' && usuarioEspecialista.especialidades.length > 0" class="mb-3">
+        <h4 class="mb-3">Dias de Atención</h4>
+        <ul>
+          <li *ngFor="let especialidad of usuarioEspecialista.especialidades; let iEspe = index">
+            <div class="row">
+              <div class="col-3">
+                <h6>Especialidad</h6>
+                <div>{{ especialidad.nombre }}</div>
+              </div>
+              <div class="col-6">
+                <h6>Dias</h6>
+                <div class="form-check form-check-inline" *ngFor="let dia of diasSemana; let iDia = index">
+                  <input class="form-check-input" type="checkbox" [ngModel]="especialidad.diasDeAtencion[iDia]" (ngModelChange)="marcarDia($event,iDia, especialidad.id, iEspe)">
+                  <label class="form-check-label">{{ dia }}</label>
+                </div>
+              </div>
+              <div class="col-2">
+                <h6>Duración</h6>
+                <input type="number" maxlength="2" [(ngModel)]="especialidad.duracionTurno">
+              </div>
+              <div class="col-1">
+                <h6>&nbsp;</h6>
+                <button class="btn btn-primary" (click)="generarTurnos(especialidad.id)"><i class="fas fa-save"></i></button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+    </div>
+  </div>
+</div>

@@ -46,7 +46,10 @@ export class EspecialidadesService {
     setDoc(docuNuevo, {
       id: nuevoId,
       nombre: especialidad.nombre,
-      duracionTurno: especialidad.duracionTurno
+      duracionTurno: especialidad.duracionTurno,
+      consultorio: '',
+      diasDeAtencion: [false,false,false,false,false,false,false],
+      imagen: ''
     });
   }
 
@@ -57,7 +60,10 @@ export class EspecialidadesService {
     const documento = doc(coleccion,especialidad.id);
     updateDoc(documento,{
       nombre: especialidad.nombre,
-      duracionTurno: especialidad.duracionTurno
+      duracionTurno: especialidad.duracionTurno,
+      consultorio: especialidad.consultorio,
+      diasDeAtencion: especialidad.diasDeAtencion,
+      imagen: especialidad.imagen
     })
   }
 

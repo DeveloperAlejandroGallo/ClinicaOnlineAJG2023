@@ -1,0 +1,146 @@
+<app-nav-bar [usuarioConectado]="usuarioConectado"></app-nav-bar>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h2 class="text-center">Sacar turno</h2>
+      <div class="mb-4">
+        <p style="color: rgb(0, 134, 252)">
+          El próximo turno según su última visita:
+        </p>
+        <div *ngIf="!proximoTurnoSegunHistoria" class="row">
+          <small class="text-muted">Uds no posee turnos anteriores.</small>
+        </div>
+        <div *ngIf="proximoTurnoSegunHistoria" class="row">
+          <div class="col">
+            <label for="especialista">Especialista:</label>
+            <input
+              type="text"
+              id="especialista"
+              class="form-control"
+              [value]="
+                proximoTurnoSegunHistoria.especialista.nombre +
+                ', ' +
+                proximoTurnoSegunHistoria.especialista.apellido
+              "
+              disabled
+            />
+          </div>
+          <div class="col">
+            <label for="especialidad">Especialidad:</label>
+            <input
+              type="text"
+              id="especialidad"
+              class="form-control"
+              [value]="proximoTurnoSegunHistoria.especialidad.nombre"
+              disabled
+            />
+          </div>
+          <div class="col">
+            <label for="fecha">Fecha:</label>
+            <input
+              type="text"
+              id="fecha"
+              class="form-control"
+              [value]="
+                proximoTurnoSegunHistoria.fechaInicio
+                  | date : 'yyyy-MM-dd HH:mm'
+              "
+              disabled
+            />
+          </div>
+          <div class="col align-self-center">
+            <button
+              class="btn btn-outlet-primary"
+              (click)="tomarTurno(proximoTurnoSegunHistoria)"
+            >
+              <i class="fas fa-calendar-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <form action="">
+        <div class="mb-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" for="selectEspecialista"
+                >Especialista:</span
+              >
+            </div>
+            <select
+              #selectEspecialista
+              id="selectEspecialista"
+              name="selectEspecialista"
+              class="form-select"
+              (change)="seleccionarEspecialista($event)"
+              placeHolder="Seleccione un especialista"
+            >
+              <option value="">Seleccione un especialista</option>
+              <option
+                *ngFor="let especialista of lstEspecialistas; let i = index"
+                [value]="i"
+              >
+                {{ especialista.apellido }}, {{ especialista.nombre }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-4" *ngIf="lstEspecialidades.length > 0">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" for="selectEspecialidad">Especialidad:</span>
+            </div>
+          <select
+            #selectEspecialidad
+            id="selectEspecialidad"
+            name="selectEspecialidad"
+            class="form-select"
+            (change)="seleccionarEspecialidad($event)"
+            placeholder="Seleccione una especialidad"
+          >
+            <option value="">Seleccione una especialidad</option>
+            <option
+              *ngFor="let especialidad of lstEspecialidades; let i = index"
+              [value]="i"
+            >
+              {{ especialidad.nombre }}
+            </option>
+          </select>
+          </div>
+        </div>
+      </form>
+
+
+      <table
+        class="table table-primary table-striped"
+        *ngIf="especialidadElegida || especialistaElegido"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Especialista</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Hora</th>
+            <th scope="col">Reservar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let turno of lstTurnosDisponibles; let i">
+            <td>{{ turno.especialista.nombre }}</td>
+            <td>{{ turno.especialidad.nombre }}</td>
+            <td>
+              {{ turno.fechaInicio | dateisoToDate | date : "yyyy-MM-dd" }}
+            </td>
+            <td>{{ turno.fechaInicio | dateisoToDate | date : "HH:mm" }}</td>
+            <td>
+              <button class="btn btn-outline-primary" (click)="tomarTurno(i)">
+                <i class="fas fa-calendar-plus"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
           case 'adminclinica1@yopmail.com':
             this.adminIco = usr.foto;
             break;
-          case 'especialistaclinica1@yopmail.com':
+          case 'especialistaclinica@yopmail.com':
             this.especialista1Ico = usr.foto;
             break;
           case 'especialistaclinica2@yopmail.com':
@@ -78,21 +78,11 @@ export class LoginComponent implements OnInit {
         }
       });
 
-      console.log(users);
 
     });
 
 
-
-
-
-    console.log(this.adminIco);
-    console.log(this.especialista1Ico);
-    console.log(this.especialista2Ico);
-    console.log(this.paciente1Ico);
-    console.log(this.paciente2Ico);
-    console.log(this.paciente3Ico);
-  }
+}
 
   public register() {
     this.router.navigate(['/registro']);
@@ -108,7 +98,7 @@ export class LoginComponent implements OnInit {
         break;
       case 'especialista1':
         this.loginForm.setValue({
-          emailLogin: 'especialistaclinica1@yopmail.com',
+          emailLogin: 'especialistaclinica@yopmail.com',
           passwordLogin: '123456',
         });
         break;

@@ -1,0 +1,190 @@
+<app-nav-bar [usuarioConectado]="usuarioConectado"></app-nav-bar>
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <img
+        class="d-block mx-auto mb-4"
+        src="../../../../assets/images/icons/calendario.png"
+        alt=""
+        width="200px"
+        height="200px"
+      />
+      <h2>{{ Titulo }}</h2>
+      <p class="lead">Administre sus turnos.</p>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-md-6 col-lg-6">
+        <app-turnos-tabla (accion)="recibirAccion($event)" (turno)="recibirTurno($event)"></app-turnos-tabla>
+      </div>
+      <div class="col-md-6 col-lg-6 order-md-last">
+        <h4 class="mb-3">Información del Turno</h4>
+        <div *ngIf="turno" class="form needs-validation" >
+          <!-- <h4 class="mb-3">{{tituloUsuario}}</h4> -->
+          <div class="row g-3">
+            <div *ngIf="usuarioConectado?.perfil == ('paciente' || 'admin')">
+              <h4 class="mb-3">{{accion}} Turno</h4>
+              <div class="col-6">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="turno.especialista.nombre"
+                  id="nombre"
+                  placeholder=""
+                  value=""
+                />
+              </div>
+
+              <div class="col-6">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="turno.especialista.apellido"
+                  id="apellido"
+                  placeholder=""
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              *ngIf="usuarioConectado?.perfil == ('especialista' || 'admin')"
+            >
+              <h4 class="mb-3">Paciente</h4>
+              <div class="col-6">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="turno.paciente!.nombre"
+                  id="nombre"
+                  placeholder=""
+                  value=""
+                />
+              </div>
+              <div class="col-6">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="turno.paciente!.apellido"
+                  id="apellido"
+                  placeholder=""
+                  value=""
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="horario" class="form-label">Horario</label>
+              <input
+                type="text"
+                class="form-control"
+                [value]="turno.fechaInicio | dateisoToDate  | date : 'yyyy-MM-dd HH:mm'"
+                id="horario"
+              />
+            </div>
+            <div class="col-6">
+              <label for="especialidad" class="form-label">Especialidad</label>
+              <input
+                type="text"
+                class="form-control"
+                [value]="turno.especialidad.nombre"
+                id="especialidad"
+              />
+            </div>
+            <div class="col-6">
+              <label for="consultorio" class="form-label">Consultorio</label>
+              <input
+                type="text"
+                class="form-control"
+                [value]="turno.consultorio"
+                id="consultorio"
+              />
+            </div>
+          </div>
+
+          <div *ngIf="verCalificarAtencion">
+            <div class="rating">
+              <span
+                class="star {{ turno.valorizacion >= 1 ? 'filled' : 'empty' }}"
+                (click)="cambiarCalificacion(1)"
+              ></span>
+              <span
+                class="star {{ turno.valorizacion >= 2 ? 'filled' : 'empty' }}"
+                (click)="cambiarCalificacion(2)"
+              ></span>
+              <span
+                class="star {{ turno.valorizacion >= 3 ? 'filled' : 'empty' }}"
+                (click)="cambiarCalificacion(3)"
+              ></span>
+              <span
+                class="star {{ turno.valorizacion >= 4 ? 'filled' : 'empty' }}"
+                (click)="cambiarCalificacion(4)"
+              ></span>
+              <span
+                class="star {{ turno.valorizacion >= 5 ? 'filled' : 'empty' }}"
+                (click)="cambiarCalificacion(5)"
+              ></span>
+            </div>
+          </div>
+
+          <div
+            *ngIf="
+              verCancelarTurno ||
+              verResenia ||
+              verCalificarAtencion ||
+              verRechazarTurnoEspecialista ||
+              verFinalizarTurnoEspecialista ||
+              verResenia
+            "
+          >
+            <div class="col-12">
+              <label for="comentario" class="form-label">Comentario</label>
+              <textarea
+                [(ngModel)]="turno.comentario"
+                class="form-control"
+                aria-label="With textarea"
+                placeholder="Ingrese un comentario"
+                id="comentario"
+              ></textarea>
+            </div>
+          </div>
+
+          <div *ngIf="verFinalizarTurnoEspecialista || verResenia">
+            <div class="col-12">
+              <label for="resenia" class="form-label">Reseña</label>
+              <textarea
+                [(ngModel)]="turno.resenia"
+                class="form-control"
+                aria-label="With textarea"
+                placeholder="Ingrese una reseña"
+                id="resenia"
+              ></textarea>
+            </div>
+          </div>
+          <div *ngIf="verCompletarEncuesta">
+            <div class="col-12">
+              <label for="encuesta" class="form-label">Encuesta</label>
+              <textarea
+                [(ngModel)]="turno.encuesta"
+                class="form-control"
+                aria-label="With textarea"
+                placeholder="Que le parecio la atención en la clinica? - ToDo: Desarrollar encuesta de satisfacción"
+                id="encuesta"
+              ></textarea>
+            </div>
+          </div>
+          <button
+            class="w-100 btn btn-outline-primary btn-lg"
+            (click)="onSubmit()"
+          >
+            Aceptar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="form-validation.js"></script>
