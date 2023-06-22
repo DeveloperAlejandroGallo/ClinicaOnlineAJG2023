@@ -17,8 +17,8 @@ export class HoverZoomDirective {
   onMouseEnter() {
     this.originalWidth = this.elementRef.nativeElement.style.width;
     this.originalHeight = this.elementRef.nativeElement.style.height;
-    this.renderer.setStyle(this.elementRef.nativeElement, 'width', '120%');
-    this.renderer.setStyle(this.elementRef.nativeElement, 'height', '120%');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'width', '50%');
+    this.renderer.setStyle(this.elementRef.nativeElement, 'height', '50%');
   }
 
   @HostListener('mouseleave')
