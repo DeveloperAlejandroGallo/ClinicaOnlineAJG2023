@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Usuario, UsuarioEspecialista, UsuarioPaciente } from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { TurnosService } from 'src/app/services/turnos.service';
@@ -21,7 +22,8 @@ export class UsuarioPerfilComponent {
 
   constructor(private authSrv: AuthService,
               private turnosSrv: TurnosService,
-              private usuarioSrv: UsuarioService
+              private usuarioSrv: UsuarioService,
+              private router: Router
               ) {
     this.usuario = this.usuarioConectado as UsuarioPaciente;
     this.usuarioEspecialista = this.usuarioConectado as UsuarioEspecialista;
@@ -39,6 +41,12 @@ export class UsuarioPerfilComponent {
 
     this.usuarioEspecialista.especialidades[indiceEspecialidad].diasDeAtencion[indiceDia] = $event.target.value;
     this.usuarioSrv.actualizarEspecialista(this.usuarioEspecialista);
+  }
+
+  irAHistoriaClinica(){
+    const id = this.usuarioConectado?.id;
+    const perfil = this.usuarioConectado?.perfil;
+    this.router.navigate(['/usuario/historiaClinica', id]);
   }
 
 }

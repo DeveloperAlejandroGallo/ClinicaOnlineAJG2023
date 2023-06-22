@@ -37,6 +37,8 @@ import { UsuariosTablaComponent } from './components/usuarios-tabla/usuarios-tab
 import { TimestampADatePipe } from './pipes/timestamp-adate.pipe';
 import { HoverZoomDirective } from './directives/hover-zoom.directive';
 import { DateisoToDatePipe } from './pipes/dateiso-to-date.pipe';
+import { UsuarioHistoriaClinicaComponent } from './pages/usuario/usuario-historia-clinica/usuario-historia-clinica.component';
+import { EspecialistaPacientesComponent } from './pages/especialista/especialista-pacientes/especialista-pacientes.component';
 
 
 
@@ -61,7 +63,9 @@ import { DateisoToDatePipe } from './pipes/dateiso-to-date.pipe';
     UsuariosTablaComponent,
     TimestampADatePipe,
     HoverZoomDirective,
-    DateisoToDatePipe
+    DateisoToDatePipe,
+    UsuarioHistoriaClinicaComponent,
+    EspecialistaPacientesComponent
   ],
   imports: [
     AppRoutingModule,

@@ -4,6 +4,7 @@ import { Usuario, UsuarioEspecialista, UsuarioPaciente } from 'src/app/models/us
 import { Especialidad } from 'src/app/models/especialidad';
 import { Router } from '@angular/router';
 import { MensajesService } from 'src/app/services/mensajes.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-admin-usuarios',
@@ -30,16 +31,19 @@ export class AdminUsuariosComponent implements OnInit{
   cuentaAprobada! : boolean;
 
   usuarioSeleccionado: Usuario | UsuarioEspecialista | UsuarioPaciente | undefined;
+  usuarioConectado: UsuarioEspecialista | Usuario | UsuarioPaciente | undefined;
 
   constructor(private usuariosSrv: UsuarioService,
               private router: Router,
-              private mensajeSrv: MensajesService) { }
+              private mensajeSrv: MensajesService,
+              private auth: AuthService) { }
 
 
 
   ngOnInit(): void {
     this.listaUsuariosEspecialistas = this.usuariosSrv.listadoUsuarios as Array<UsuarioEspecialista>;
     this.listaUsuarios = this.usuariosSrv.listadoUsuarios;
+    this.usuarioConectado = this.auth.logInfo();
 
   }
 
@@ -80,4 +84,16 @@ export class AdminUsuariosComponent implements OnInit{
     this.mensajeSrv.Exito('Cuenta aprobada');
     this.cuentaAprobada = true;
   }
+
+  irAHistoriaClinica(){
+    const id = this.usuarioSeleccionado?.id;
+    const perfil = this.usuarioSeleccionado?.perfil;
+    this.router.navigate(['/usuario/historiaClinica', id]);
+
+  }
+
+  exportarExcel(){
+
+  };
+
 }

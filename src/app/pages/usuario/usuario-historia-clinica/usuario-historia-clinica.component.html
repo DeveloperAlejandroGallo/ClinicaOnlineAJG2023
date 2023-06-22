@@ -1,0 +1,159 @@
+<app-nav-bar></app-nav-bar>
+<div class="historia-clinica" style="margin-top: 100px">
+  <div class="py-5 text-center">
+    <img
+      class="d-block mx-auto mb-4"
+      src="../../../../assets/images/icons/historiaClinica.png"
+      alt=""
+      width="150px"
+      height="150px"
+    />
+    <h2>Historia Clínica</h2>
+  </div>
+  <div class="paciente-info">
+    <div class="paciente-avatar">
+      <img [src]="paciente.foto" alt="Foto del paciente" />
+    </div>
+    <div class="paciente-details">
+      <h3>{{ paciente.nombre }} {{ paciente.apellido }}</h3>
+      <p>Edad: {{ paciente.edad }}</p>
+      <p>DNI: {{ paciente.dni }}</p>
+      <p>Obra Social: {{ paciente.obraSocial }}</p>
+    </div>
+  </div>
+  <div class="historias-list">
+    <div class="historia-item" *ngFor="let historia of historiasClinicas">
+      <h4>Historia Clínica - Turno {{ historia.turno.id }}</h4>
+      <div class="row">
+        <div class="col-md-4">
+          <p>
+            <strong>Fecha:</strong>
+            {{
+              historia.turno.fechaInicio
+                | dateisoToDate
+                | date : "yyyy-MM-dd HH:mm"
+            }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <p>
+            <strong>Especialista:</strong>
+            {{ historia.turno.especialista.nombre }}
+            {{ historia.turno.especialista.apellido }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <p>
+            <strong>Especialidad:</strong>
+            {{ historia.turno.especialidad.nombre }}
+          </p>
+        </div>
+      </div>
+      <div class="datos-clinicos">
+        <h5>Datos Clínicos</h5>
+        <table
+          class="table table-striped table-hover table-bordered border-info"
+        >
+          <thead>
+            <tr>
+              <th>Altura</th>
+              <th>Peso</th>
+              <th>Temperatura</th>
+              <th>Presión</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ historia.altura }} cm.</td>
+              <td>{{ historia.peso }} kg.</td>
+              <td>{{ historia.temperatura }} C°</td>
+              <td>{{ historia.presion }} HH mm</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="datos-dinamicos">
+        <h5>Datos Dinámicos</h5>
+        <table
+          class="table table-striped table-hover table-bordered border-info"
+        >
+          <thead>
+            <tr *ngFor="let dato of historia.datosDinamicos">
+              <th>{{ dato.clave }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dato of historia.datosDinamicos">
+              <td>{{ dato.valor }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <button
+    class="w-100 btn btn-outline-dark btn-lg"
+    (click)="exportarHistoriaClinica()"
+  >
+    <i class="fas fa-file-pdf"></i> Descargar Historia Clinica
+  </button>
+</div>
+
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div class="avatar">
+              <img [src]="paciente.fotoPaciente" alt="Foto del paciente" class="img-fluid">
+            </div>
+            <div class="ml-3">
+              <h4>{{ paciente.nombre }} {{ paciente.apellido }}</h4>
+              <p class="text-muted">Edad: {{ paciente.edad }}</p>
+              <p class="text-muted">DNI: {{ paciente.dni }}</p>
+              <p class="text-muted">Obra Social: {{ paciente.obraSocial }}</p>
+            </div>
+          </div>
+          <div class="card bg-light mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Historias Clínicas</h5>
+              <div *ngFor="let historia of historiasClinicas" class="mb-4">
+                <h6 class="card-subtitle mb-2 text-muted">Historia Clínica - Turno {{ historia.turno.id }}</h6>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><strong>Fecha:</strong> {{ historia.turno.fechaInicio | dateisoToDate | date: "yyyy-MM-dd HH:mm" }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p><strong>Especialista:</strong> {{ historia.turno.especialista.nombre }} {{ historia.turno.especialista.apellido }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p><strong>Especialidad:</strong> {{ historia.turno.especialidad }}</p>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <h6>Datos Clínicos</h6>
+                  <p><strong>Altura:</strong> {{ historia.altura }}</p>
+                  <p><strong>Peso:</strong> {{ historia.peso }}</p>
+                  <p><strong>Temperatura:</strong> {{ historia.temperatura }}</p>
+                  <p><strong>Presión:</strong> {{ historia.presion }}</p>
+                </div>
+                <div>
+                  <h6>Datos Dinámicos</h6>
+                  <ul>
+                    <li *ngFor="let dato of historia.datosDinamicos">
+                      <strong>{{ dato.clave }}:</strong> {{ dato.valor }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div >
+        <button class="w-100 btn btn-outline-dark btn-lg" (click)="exportarHistoriaClinica()"><i class="fas fa-file-pdf"></i> Descargar Historia Clinica</button>
+      </div>
+    </div>
+  </div>
+</div> -->

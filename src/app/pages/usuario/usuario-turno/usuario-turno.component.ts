@@ -1,11 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccionesTurnos } from 'src/app/enums/acciones-turnos';
 import { EstadoTurno } from 'src/app/enums/estado-turno';
+import { HistoriaClinica } from 'src/app/models/historia-clinica';
 import { Turno } from 'src/app/models/turno';
 import { AuthService } from 'src/app/services/auth.service';
+import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
 import { MensajesService } from 'src/app/services/mensajes.service';
 import { TurnosService } from 'src/app/services/turnos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+
 
 @Component({
   selector: 'app-usuario-turno',
@@ -18,6 +22,19 @@ export class UsuarioTurnoComponent implements OnInit{
     @Input() accion: string = '';
     @Input() turno!: Turno;
 
+    @ViewChild('modalHistoria') modalHistoria!: ElementRef;
+
+    @ViewChildren('claveInput') claveInputs!: QueryList<ElementRef>;
+    @ViewChildren('valorInput') valorInputs!: QueryList<ElementRef>;
+
+    formHistoriaClinica!: FormGroup;
+
+    txtBotonAceptar: string = 'Guardar Cambios';
+    claseColorBoton: string = 'btn-outline-primary';
+
+    datosDinamicos: Array<{clave: string, valor: string}> = [{clave:'',valor:''}];
+
+
     usuarioConectado = this.authSrv.logInfo();
 
     Titulo = 'Mis turnos';
@@ -28,7 +45,23 @@ export class UsuarioTurnoComponent implements OnInit{
 
     constructor(private srvTurnos: TurnosService,
                 private srvMensajes: MensajesService,
-                private authSrv: AuthService) { }
+                private authSrv: AuthService,
+                private historiasSrv: HistoriaClinicaService) {
+
+    this.formHistoriaClinica = new FormGroup(
+      {
+        altura: new FormControl('', [Validators.required]),
+        peso: new FormControl('', [Validators.required]),
+        temperatura: new FormControl('', [
+          Validators.required,
+        ]),
+        presion: new FormControl('', [Validators.required]),
+        // datosDinamicos: new FormArray([this.crearFormGroupDatosDinamicos('', '')]), // FormArray para los datos dinámicos
+      },
+      Validators.required
+    );
+
+  }
 
     //Paciente
     verCancelarTurno: boolean = false;
@@ -58,33 +91,52 @@ export class UsuarioTurnoComponent implements OnInit{
     recibirAccion($event: string) {
       this.limpiarControles();
       this.accion = $event;
+
       console.log('accion',this.accion);
       switch (this.accion) {
         case AccionesTurnos.Cancelar:
           this.verCancelarTurno = true;
+          this.txtBotonAceptar = 'Cancelar Turno';
+          this.claseColorBoton = 'btn-outline-warning';
           break;
         case AccionesTurnos.Aceptar:
           this.verAceptarTurnoEspecialista = true;
+          this.txtBotonAceptar = 'Aceptar Turno';
+          this.claseColorBoton = 'btn-outline-primary';
           break;
         case AccionesTurnos.Rechazar:
           this.verRechazarTurnoEspecialista = true;
+          this.txtBotonAceptar = 'Rechazar Turno';
+          this.claseColorBoton = 'btn-outline-danger';
           break;
         case AccionesTurnos.Finalizar:
           this.verFinalizarTurnoEspecialista = true;
+          this.txtBotonAceptar = 'Finalizar Turno';
+          this.claseColorBoton = 'btn-outline-success';
           break;
         case AccionesTurnos.Completar:
           this.verCompletarEncuesta = true;
+          this.txtBotonAceptar = 'Finalizar Encuesta';
+          this.claseColorBoton = 'btn-outline-primary';
           break;
         case AccionesTurnos.Calificar:
           this.verCalificarAtencion = true;
+          this.txtBotonAceptar = 'Calificar Atencion';
+          this.claseColorBoton = 'btn-outline-info';
           break;
         case AccionesTurnos.Reseniar:
           this.verResenia = true;
+          this.txtBotonAceptar = 'Guardar Resenia';
+          this.claseColorBoton = 'btn-outline-dark';
           break;
         default:
           break;
       }
     }
+
+  tieneHistoriaClinica() {
+    return this.historiasSrv.lstHistoriasClinicas.some(x => x.turno.id=this.turno.id);
+  }
 
     recibirTurno($event: Turno){
       this.turno = $event;
@@ -162,13 +214,18 @@ export class UsuarioTurnoComponent implements OnInit{
     }
     finalizarTurno() {
       console.log('Finalizar turno');
+      if(!this.tieneHistoriaClinica())
+      {
+        this.srvMensajes.Warning('Debe crear una historia clinica para el paciente antes de finalizar el turno');
+        return;
+      }
       if(this.turno!.comentario != "" || this.turno!.resenia != ""){
         this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Realizado,this.turno!.comentario);
         this.srvTurnos.actualizarFechaFin(this.turno?.id);
         this.srvMensajes.Info('Turno finalizado');
         }
       else
-        this.srvMensajes.Warning('Debe ingresar un comentario');
+        this.srvMensajes.Warning('Debe ingresar un comentario o resenia');
     }
     //Paciente
     completarEncuenta() {
@@ -191,6 +248,120 @@ export class UsuarioTurnoComponent implements OnInit{
       }
 
     }
+
+
+    //Modal
+    openModal() {
+      const modalElement = this.modalHistoria.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+      document.body.classList.add('modal-open');
+    }
+
+    closeModal() {
+    const modalElement = this.modalHistoria.nativeElement;
+    modalElement.classList.remove('show');
+    modalElement.style.display = 'none';
+    document.body.classList.remove('modal-open');
+  }
+
+  // crearFormGroupDatosDinamicos(clave: string, valor: string): FormGroup {
+  //   return new FormGroup({
+  //     clave: new FormControl(clave, Validators.required),
+  //     valor: new FormControl(valor, Validators.required),
+  //   });
+  // }
+
+  agregarDatoDinamico(clave: string, valor: string, i: number): void {
+
+    if (this.datosDinamicos.length < 3) {
+      const claveInputValue = this.claveInputs.toArray()[i].nativeElement.value;
+      const valorInputValue = this.valorInputs.toArray()[i].nativeElement.value;
+
+      // Verificar si las casillas anteriores están cargadas
+      if (claveInputValue && valorInputValue) {
+
+        this.datosDinamicos[i].clave = claveInputValue;
+        this.datosDinamicos[i].valor = valorInputValue;
+
+        this.datosDinamicos.push({ clave: "", valor: "" });
+      } else {
+        this.srvMensajes.Warning('Por favor, complete las casillas anteriores antes de agregar un nuevo dato dinámico');
+      }
+    } else {
+      this.srvMensajes.Warning('No se pueden agregar más de 3 datos dinámicos');
+    }
+  }
+
+  // Método para eliminar un dato dinámico del formulario
+  eliminarDatoDinamico(index: number) {
+    if(index === 0)
+    {
+      this.srvMensajes.Warning("Debe ingresar al menos un dato dinámico");
+      return;
+    }
+    this.datosDinamicos.splice(index,1);
+  }
+
+  guardarHistoriaClinica() {
+
+    for(let i=0; i<this.claveInputs.toArray().length; i++)
+    {
+      const claveInputValue = this.claveInputs.toArray()[i].nativeElement.value;
+      const valorInputValue = this.valorInputs.toArray()[i].nativeElement.value;
+      if (!claveInputValue || !valorInputValue) {
+        this.srvMensajes.Warning('Por favor, complete todos los datos dinámicos correctamente o elimínelos');
+        return;
+      }else {
+        this.datosDinamicos[i].clave = claveInputValue;
+        this.datosDinamicos[i].valor = valorInputValue;
+      }
+    }
+
+    let historiaClinica: HistoriaClinica = {
+      id: '',
+      turno: this.turno,
+      altura: this.altura?.value,
+      peso: this.peso?.value,
+      temperatura: this.temperatura?.value,
+      presion: this.presion?.value,
+      datosDinamicos: this.datosDinamicos,
+    };
+
+    this.historiasSrv.nuevaHistoriaClinica(historiaClinica);
+    setTimeout(() => {
+
+      this.srvMensajes.Exito('Historia clínica guardada');
+      this.closeModal();
+
+    }, 500);
+
+  }
+
+  // Getter y Setter para altura
+  get altura() {
+    return this.formHistoriaClinica.get('altura') ;
+  }
+
+  // Getter y Setter para peso
+  get peso() {
+    return this.formHistoriaClinica.get('peso');
+  }
+
+  // Getter y Setter para temperatura
+  get temperatura() {
+    return this.formHistoriaClinica.get('temperatura');
+  }
+
+  // Getter y Setter para presion
+  get presion() {
+    return this.formHistoriaClinica.get('presion');
+  }
+
+  // Getter para datosDinamicos
+  // get datosDinamicos(): FormArray {
+  //   return this.formHistoriaClinica.get('datosDinamicos') as FormArray;
+  // }
 
 
 }

@@ -15,15 +15,18 @@
 
     <div class="row g-5">
       <div class="col-md-6 col-lg-6">
-        <app-turnos-tabla (accion)="recibirAccion($event)" (turno)="recibirTurno($event)"></app-turnos-tabla>
+        <app-turnos-tabla
+          (accion)="recibirAccion($event)"
+          (turno)="recibirTurno($event)"
+        ></app-turnos-tabla>
       </div>
       <div class="col-md-6 col-lg-6 order-md-last">
         <h4 class="mb-3">Información del Turno</h4>
-        <div *ngIf="turno" class="form needs-validation" >
+        <div *ngIf="turno" class="form needs-validation">
           <!-- <h4 class="mb-3">{{tituloUsuario}}</h4> -->
           <div class="row g-3">
+            <h4 class="mb-3">{{ accion }} Turno</h4>
             <div *ngIf="usuarioConectado?.perfil == ('paciente' || 'admin')">
-              <h4 class="mb-3">{{accion}} Turno</h4>
               <div class="col-6">
                 <label for="nombre" class="form-label">Nombre</label>
                 <input
@@ -80,7 +83,9 @@
               <input
                 type="text"
                 class="form-control"
-                [value]="turno.fechaInicio | dateisoToDate  | date : 'yyyy-MM-dd HH:mm'"
+                [value]="
+                  turno.fechaInicio | dateisoToDate | date : 'yyyy-MM-dd HH:mm'
+                "
                 id="horario"
               />
             </div>
@@ -175,16 +180,214 @@
               ></textarea>
             </div>
           </div>
+          <!-- && !tieneHistoriaClinica() -->
           <button
+            class="w-100 btn btn-outline-info btn-lg"
+            *ngIf="verFinalizarTurnoEspecialista && !tieneHistoriaClinica()"
+            (click)="openModal()"
+          >
+            Completar Historia Clinica
+          </button>
+          <button
+            [ngClass]="claseColorBoton"
             class="w-100 btn btn-outline-primary btn-lg"
             (click)="onSubmit()"
           >
-            Aceptar Cambios
+            {{ txtBotonAceptar }}
           </button>
         </div>
       </div>
     </div>
   </main>
+</div>
+
+<!-- Modal de Historia Clinica -->
+<div #modalHistoria class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <form
+      [formGroup]="formHistoriaClinica"
+      (ngSubmit)="guardarHistoriaClinica()"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Historia Clínica</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Altura</span>
+                </div>
+                <input
+                  class="form-control number"
+                  formControlName="altura"
+                  placeholder="Altura"
+                  required
+                />
+                <b> Cm</b>
+              </div>
+              <ng-container
+              *ngIf="
+                formHistoriaClinica.controls['altura'].hasError(
+                  'required'
+                ) && formHistoriaClinica.controls['altura'].touched
+              "
+            >
+              <small class="error-message"> Ingrese altura </small>
+            </ng-container>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Peso</span>
+                </div>
+                <input
+                  class="form-control number"
+                  formControlName="peso"
+                  placeholder="Peso"
+                  required
+                />
+                <b> Kg</b>
+              </div>
+              <ng-container
+                *ngIf="
+                  formHistoriaClinica.controls['peso'].hasError('required') &&
+                  formHistoriaClinica.controls['peso'].touched
+                "
+              >
+                <small class="error-message"> Ingrese peso </small>
+              </ng-container>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Temp.</span>
+                </div>
+                <input
+                  class="form-control"
+                  formControlName="temperatura"
+                  placeholder="Temperatura"
+                  required
+                />
+                <b> C°</b>
+              </div>
+              <ng-container
+                *ngIf="
+                  formHistoriaClinica.controls['temperatura'].hasError(
+                    'required'
+                  ) && formHistoriaClinica.controls['temperatura'].touched
+                "
+              >
+                <small class="error-message"> Ingrese temperatura </small>
+              </ng-container>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Presión</span>
+                </div>
+                <input
+                  class="form-control"
+                  formControlName="presion"
+                  placeholder="Presión"
+                  required
+                />
+                <b> mm Hg</b>
+              </div>
+              <ng-container
+                *ngIf="
+                  formHistoriaClinica.controls['presion'].hasError(
+                    'required'
+                  ) && formHistoriaClinica.controls['presion'].touched
+                "
+              >
+                <small class="error-message"> Ingrese presión </small>
+              </ng-container>
+            </div>
+          </div>
+          <div>Datos Dinámicos:</div>
+          <div>
+            <div class="row" *ngFor="let dato of datosDinamicos; let i = index">
+              <div class="col-md-4">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Clave</span>
+                  </div>
+                  <input
+                    class="form-control"
+                    placeholder="Clave"
+                    #claveInput
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Valor</span>
+                  </div>
+                  <input
+                    class="form-control"
+                    placeholder="Valor"
+                    #valorInput
+                    required
+                  />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <button
+                  type="button"
+                  class="btn btn-outline-danger"
+                  (click)="eliminarDatoDinamico(i)"
+                >
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="agregarDatoDinamico('', '', i)"
+                >
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-outline-success"
+            data-dismiss="modal"
+            [disabled]="!formHistoriaClinica.valid"
+          >
+            Guardar
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-dismiss="modal"
+            (click)="closeModal()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <script src="form-validation.js"></script>

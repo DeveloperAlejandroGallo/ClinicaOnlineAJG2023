@@ -35,7 +35,7 @@ export class ImagenesService {
 
     listAll(imagesRef)
       .then(async response => {
-        console.log(response);
+        // console.log(response);
         this.listaImagenes = [];
         for (let item of response.items) {
           const url = await getDownloadURL(item);

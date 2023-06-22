@@ -58,89 +58,73 @@
           </div>
         </div>
       </div>
-
       <form action="">
-        <div class="mb-4">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" for="selectEspecialista"
-                >Especialista:</span
+        <!-- Listas a partir de aca -->
+        <!-- Listado de Especialistas -->
+        <div *ngIf="lstEspecialistas.length > 0" class="row">
+          <div
+            class="col-3"
+            *ngFor="let especialista of lstEspecialistas; let i = index"
+            appHoverZoom>
+            <div class="text-center">
+              <button
+                class="btn btn-lg"
+                (click)="seleccionarEspecialista(i)"
               >
-            </div>
-            <select
-              #selectEspecialista
-              id="selectEspecialista"
-              name="selectEspecialista"
-              class="form-select"
-              (change)="seleccionarEspecialista($event)"
-              placeHolder="Seleccione un especialista"
-            >
-              <option value="">Seleccione un especialista</option>
-              <option
-                *ngFor="let especialista of lstEspecialistas; let i = index"
-                [value]="i"
-              >
-                {{ especialista.apellido }}, {{ especialista.nombre }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="mb-4" *ngIf="lstEspecialidades.length > 0">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" for="selectEspecialidad">Especialidad:</span>
-            </div>
-          <select
-            #selectEspecialidad
-            id="selectEspecialidad"
-            name="selectEspecialidad"
-            class="form-select"
-            (change)="seleccionarEspecialidad($event)"
-            placeholder="Seleccione una especialidad"
-          >
-            <option value="">Seleccione una especialidad</option>
-            <option
-              *ngFor="let especialidad of lstEspecialidades; let i = index"
-              [value]="i"
-            >
-              {{ especialidad.nombre }}
-            </option>
-          </select>
-          </div>
-        </div>
-      </form>
-
-
-      <table
-        class="table table-primary table-striped"
-        *ngIf="especialidadElegida || especialistaElegido"
-      >
-        <thead>
-          <tr>
-            <th scope="col">Especialista</th>
-            <th scope="col">Especialidad</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Hora</th>
-            <th scope="col">Reservar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let turno of lstTurnosDisponibles; let i">
-            <td>{{ turno.especialista.nombre }}</td>
-            <td>{{ turno.especialidad.nombre }}</td>
-            <td>
-              {{ turno.fechaInicio | dateisoToDate | date : "yyyy-MM-dd" }}
-            </td>
-            <td>{{ turno.fechaInicio | dateisoToDate | date : "HH:mm" }}</td>
-            <td>
-              <button class="btn btn-outline-primary" (click)="tomarTurno(i)">
-                <i class="fas fa-calendar-plus"></i>
+                <img
+                  [src]="especialista.foto"
+                  alt="Imagen del especialista"
+                  class="rounded-circle mb-2"
+                />
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <p><b>{{ especialista.nombre }}</b></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listado de Especialidades -->
+        <div *ngIf="lstEspecialidades.length > 0" class="row">
+          <div class="col-3" *ngFor="let especialidad of lstEspecialidades; let i = index">
+            <div class="text-center">
+              <button class="rounded-circle mb-2" (click)="seleccionarEspecialidad(i)">
+                <img [src]="especialidad.imagen || '../../../assets/images/icons/especialidad.png'" alt="especialidad.png" class="rounded mb-2">
+              </button>
+              <p><b>{{ especialidad.nombre }}</b></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listado de Fechas -->
+        <div *ngIf="lstDiasDeTurnos.length > 0" class="row">
+          <div
+            class="col-3"
+            *ngFor="let fecha of lstDiasDeTurnos; let i = index"
+          >
+            <button
+              class="btn btn-primary btn-rounded"
+              (click)="seleccionarFecha(i)"
+            >
+              {{ fecha | date : "yyyy-MM-dd" }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Listado de Horarios -->
+        <div *ngIf="lstTurnosDisponibles.length > 0" class="row">
+          <div
+            class="col-3"
+            *ngFor="let turno of lstTurnosDisponibles; let i = index"
+          >
+            <button
+              class="btn btn-info btn-rounded"
+              (click)="seleccionarHora(i)"
+            >
+              {{ turno.fechaInicio | dateisoToDate | date : "HH:mm" }}
+            </button>
+          </div>
+        </div>
+        <!-- Listas hasta aqui -->
+      </form>
     </div>
   </div>
 </div>

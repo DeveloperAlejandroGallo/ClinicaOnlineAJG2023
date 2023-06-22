@@ -1,19 +1,19 @@
-<h4 class="d-flex justify-content-between align-items-center mb-3">
+<h4 class="d-flex justify-content-between align-items-center">
   <span class="text-primary">Turnos</span>
   <span class="badge bg-primary rounded-pill">{{
-    listadoDeTurnos.length
+    (listadoDeTurnos | filtroTurnos : usuarioConectado : filtroNombre).length
     }}</span>
 </h4>
-<div class="mb-3">
+<div >
   <input type="text" class="form-control" placeholder="Filtrar por especialidad y {{ pacienteOEspecialista }}"
     [(ngModel)]="filtroNombre" />
 </div>
-<ul class="list-group mb-3">
+<ul class="list-group">
   <li *ngFor="
       let turno of listadoDeTurnos
         | filtroTurnos : usuarioConectado : filtroNombre;
       let i = index"
-      class="list-group-item d-flex justify-content-between lh-sm" appHighLigth="">
+      class="list-group-item d-flex justify-content-between " appHighLigth="">
     <div>
       <div class="d-flex justify-content-between align-items-center" *ngIf="usuarioConectado?.perfil != 'paciente'">
         <h6 class="my-0">Paciente:</h6>
@@ -40,47 +40,47 @@
       <div class="d-flex justify-content-between align-items-center">
         <span class="badge bg-primary rounded-pill align-self-end"><b>{{ turno.estado.toUpperCase() }}</b></span>
       </div>
-      <div *ngIf="usuarioConectado?.perfil == 'admin'" class="d-flex justify-content-between align-items-center mt-3">
+      <div *ngIf="usuarioConectado?.perfil == 'admin'" class="d-flex justify-content-between align-items-center ">
         <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning"
           (click)="accionSeleccionada('Cancelar',turno)">
           <i class="fas fa-times"></i> Cancelar
         </button>
       </div>
-      <div class="d-flex justify-content-between align-items-center mt-3"
+      <div class="d-flex justify-content-between align-items-center"
         *ngIf="usuarioConectado?.perfil == 'paciente'">
-        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning"
+        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-outline-warning"
           (click)="accionSeleccionada('Cancelar',turno)">
           <i class="fas fa-times"></i>
         </button>
-        <button *ngIf="verCompletarEncuesta(turno)" class="btn btn-primary" (click)="accionSeleccionada('LlenarEncuesta',turno)">
+        <button *ngIf="verCompletarEncuesta(turno)" class="btn btn-outline-primary" (click)="accionSeleccionada('LlenarEncuesta',turno)">
           <i class="fas fa-poll"></i>
         </button>
-        <button *ngIf="verCalificarAtencion(turno)" class="btn btn-danger" (click)="accionSeleccionada('Calificar',turno)">
+        <button *ngIf="verCalificarAtencion(turno)" class="btn btn-outline-info" (click)="accionSeleccionada('Calificar',turno)">
           <i class="fas fa-star"></i>
         </button>
-        <button *ngIf="verResenia(turno)" class="btn btn-dark" (click)="accionSeleccionada('Reseniar',turno)">
+        <button *ngIf="verResenia(turno)" class="btn btn-outline-dark" (click)="accionSeleccionada('Reseniar',turno)">
           <i class="fas fa-comment"></i>
         </button>
       </div>
-      <div class="d-flex justify-content-between align-items-center mt-3"
+      <div class="d-flex justify-content-between align-items-center "
         *ngIf="usuarioConectado?.perfil == 'especialista'">
-        <button *ngIf="verAceptarTurnoEspecialista(turno)" class="btn btn-warning"
+        <button *ngIf="verCancelarTurnoEspecialista(turno)" class="btn btn-outline-warning" data-toggle="tooltip" title="Cancelar"
           (click)="accionSeleccionada('Cancelar',turno)">
           <i class="fas fa-times"></i>
         </button>
-        <button *ngIf="verAceptarTurnoEspecialista(turno)" class="btn btn-primary"
+        <button *ngIf="verAceptarTurnoEspecialista(turno)" class="btn btn-outline-primary" data-toggle="tooltip" title="Aceptar"
           (click)="accionSeleccionada('Aceptar',turno)">
           <i class="fas fa-check"></i>
         </button>
-        <button *ngIf="verRechazarTurnoEspecialista(turno)" class="btn btn-danger"
+        <button *ngIf="verRechazarTurnoEspecialista(turno)" class="btn btn-outline-danger" data-toggle="tooltip" title="Rechazar"
           (click)="accionSeleccionada('Rechazar',turno)">
           <i class="fas fa-ban"></i>
         </button>
-        <button *ngIf="verFinalizarTurnoEspecialista(turno)" class="btn btn-success"
+        <button *ngIf="verFinalizarTurnoEspecialista(turno)" class="btn btn-outline-success" data-toggle="tooltip" title="Finalizar"
           (click)="accionSeleccionada('Finalizar',turno)">
           <i class="fas fa-check-circle"></i>
         </button>
-        <button *ngIf="verResenia(turno)" class="btn btn-dark" (click)="accionSeleccionada('Reseniar',turno)">
+        <button *ngIf="verResenia(turno)" class="btn btn-outline-dark" (click)="accionSeleccionada('Reseniar',turno)"  data-toggle="tooltip" title="Reseña">
           <i class="fas fa-comment"></i>
         </button>
       </div>

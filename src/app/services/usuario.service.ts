@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class UsuarioService {
 
+
   colectionName: string = 'usuarios';
   coleccionUsuarios: CollectionReference<DocumentData>;
 
@@ -26,6 +27,9 @@ export class UsuarioService {
     return collectionData(queryAll) as Observable<Usuario[]>;
   }
 
+  getPacienteById(idPaciente: string): UsuarioPaciente {
+    return this.listadoUsuarios.find((paciente) => paciente.id == idPaciente) as UsuarioPaciente;
+  }
 
 //Genericos
   traer(){

@@ -67,15 +67,13 @@ export class TurnosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioConectado = this.authSrv.logInfo();
-    this.lstEspecialidades = this.especialidadesSrv.listadoEspecialidades;
+
     this.lstEspecialistas = this.usuariosSrv.listadoUsuarios.filter(
       (x) => x.perfil == 'especialista'
     ) as UsuarioEspecialista[];
+
     let fechaActual = new Date();
     fechaActual.setHours(0, 0, 0, 0);
-    this.lstTurnosDisponibles = this.turnoSrv.listadoTurnos.filter(
-      (x) => new Date(x.fechaInicio) < new Date(fechaActual)
-    );
 
     let ultimoTurnoPaciente = this.lstTurnosTomados
       .filter(
@@ -145,63 +143,63 @@ export class TurnosComponent implements OnInit {
     return result;
   }
 
-  genero15DiasDeTurnosDisponibles() {
-    this.lstTurnosDisponibles = [];
-    //necesito una lista de fechas sin hora, de los turnos que voy generando
-    this.lstDiasDeTurnos = [];
+  // genero15DiasDeTurnosDisponibles() {
+  //   this.lstTurnosDisponibles = [];
+  //   //necesito una lista de fechas sin hora, de los turnos que voy generando
+  //   this.lstDiasDeTurnos = [];
 
-    this.lstEspecialistas.forEach((especialista) => {
-      especialista.especialidades.forEach((especialidad) => {
-        let fecha = new Date();
+  //   this.lstEspecialistas.forEach((especialista) => {
+  //     especialista.especialidades.forEach((especialidad) => {
+  //       let fecha = new Date();
 
-        for (let i = 0; i < 15; i++) {
-          //15 dias
-          fecha.setDate(fecha.getDate() + 1);
-          fecha.setHours(8, 0, 0, 0);
+  //       for (let i = 0; i < 15; i++) {
+  //         //15 dias
+  //         fecha.setDate(fecha.getDate() + 1);
+  //         fecha.setHours(8, 0, 0, 0);
 
-          let horaFin = fecha.getDay() != 6 ? 20 : 14; // si es sabado es hasta las 14
-          while (fecha.getHours() < horaFin) {
-            if (
-              especialista.especialidades.find(
-                (x) => x.diasDeAtencion[fecha.getDay()]
-              )
-            ) {
-              // si el especialista atiende ese dia
+  //         let horaFin = fecha.getDay() != 6 ? 20 : 14; // si es sabado es hasta las 14
+  //         while (fecha.getHours() < horaFin) {
+  //           if (
+  //             especialista.especialidades.find(
+  //               (x) => x.diasDeAtencion[fecha.getDay()]
+  //             )
+  //           ) {
+  //             // si el especialista atiende ese dia
 
-              let turno: Turno = {
-                id: '',
-                especialista: especialista,
-                especialidad: especialidad,
-                fechaInicio: new Date(fecha).toISOString(),
-                paciente: null,
-                estado: EstadoTurno.Libre,
-                fechaFin: undefined,
-                consultorio: especialidad.consultorio,
-                comentario: '',
-                resenia: '',
-                fechaEstado: new Date().toISOString(),
-                encuesta: '',
-                valorizacion: 0,
-              };
-              let fechaSinHora = turno.fechaInicio.split('T')[0];
+  //             let turno: Turno = {
+  //               id: '',
+  //               especialista: especialista,
+  //               especialidad: especialidad,
+  //               fechaInicio: new Date(fecha).toISOString(),
+  //               paciente: null,
+  //               estado: EstadoTurno.Libre,
+  //               fechaFin: undefined,
+  //               consultorio: especialidad.consultorio,
+  //               comentario: '',
+  //               resenia: '',
+  //               fechaEstado: new Date().toISOString(),
+  //               encuesta: '',
+  //               valorizacion: 0,
+  //             };
+  //             let fechaSinHora = turno.fechaInicio.split('T')[0];
 
-              if (!this.lstDiasDeTurnos.includes(fechaSinHora)) {
-                this.lstDiasDeTurnos.push(fechaSinHora);
-              }
+  //             if (!this.lstDiasDeTurnos.includes(fechaSinHora)) {
+  //               this.lstDiasDeTurnos.push(fechaSinHora);
+  //             }
 
-              this.lstTurnosDisponibles.push(turno);
-            }
+  //             this.lstTurnosDisponibles.push(turno);
+  //           }
 
-            fecha.setMinutes(fecha.getMinutes() + especialidad.duracionTurno);
-          }
-        }
-      });
-    });
+  //           fecha.setMinutes(fecha.getMinutes() + especialidad.duracionTurno);
+  //         }
+  //       }
+  //     });
+  //   });
 
-    setTimeout(() => {
-      this.filtrarTurnosTomados();
-    }, 1000);
-  }
+  //   setTimeout(() => {
+  //     this.filtrarTurnosTomados();
+  //   }, 1000);
+  // }
 
   filtrarTurnosTomados() {
     //filtrar los turnos disponibles con los turnos ya tomados en la coleccion de turnos en la misma fecha, especialidad y especialista
@@ -250,24 +248,31 @@ export class TurnosComponent implements OnInit {
     this.resetSelect();
   }
 
-  seleccionarEspecialista($event: any) {
-    let i = $event.target.value;
+  seleccionarEspecialista(i: number) {
+
     this.especialistaElegido = this.lstEspecialistas[i];
+    console.log("especialisat Elegido:", this.especialistaElegido);
     this.lstEspecialidades = this.especialistaElegido.especialidades;
     this.lstDiasDeTurnos = [];
+    this.lstTurnosDisponibles = [];
+    this.especialidadElegida = null;
 
   }
 
-  seleccionarEspecialidad($event: any) {
-    let i = $event.target.value;
+  seleccionarEspecialidad(i: number) {
+
     this.especialidadElegida = this.lstEspecialidades[i];
     this.genero15DiasDeTurnosParaEspecialistaYEspecialidad();
   }
 
-  seleccionarFecha($event: any) {
-    let i = $event.target.value;
+  seleccionarFecha(i: number) {
+
     this.fechaElegida = this.lstDiasDeTurnos[i];
+    console.log("fecha elegida:", this.fechaElegida);
     let fecha = new Date(this.fechaElegida);
+    fecha.setHours(8, 0, 0, 0);
+
+    console.log("fecha elegida:", fecha);
     let especialidad = this.especialidadElegida!;
     let especialista = this.especialistaElegido!;
     let horaFinDelDia = fecha.getDay() != 6 ? 20 : 14; // si es sabado es hasta las 14
@@ -275,13 +280,11 @@ export class TurnosComponent implements OnInit {
     this.lstTurnosDisponibles = [];
 
     while (fecha.getHours() < horaFinDelDia) {
-      if (
-        especialista.especialidades.find(
-          (x) => x.diasDeAtencion[fecha.getDay()]
-        )
-      ) {
-        // si el especialista atiende ese dia
+      console.log("fecha:", fecha )
 
+      if (especialista.especialidades.find((x) => x.id == especialidad.id && x.diasDeAtencion[fecha.getDay()])){
+        // si el especialista atiende ese dia
+        console.log("especialista atiende ese dia");
         let turno: Turno = {
           id: '',
           especialista: especialista,
@@ -297,7 +300,7 @@ export class TurnosComponent implements OnInit {
           encuesta: '',
           valorizacion: 0,
         };
-        let turnoLibre = !this.lstTurnosTomados.find((turnoTomado) => {
+        let turnoLibre = !this.lstTurnosTomados.some((turnoTomado) => {
           return (
             turnoTomado.especialista.id == turno.especialista.id &&
             turnoTomado.especialidad.id == turno.especialidad.id &&
@@ -308,13 +311,21 @@ export class TurnosComponent implements OnInit {
           );
         });
 
+        console.log("turno libre:", turnoLibre);
         if (turnoLibre) {
           this.lstTurnosDisponibles.push(turno);
         }
-
-        fecha.setMinutes(fecha.getMinutes() + especialidad.duracionTurno);
+      } else {
+        fecha.setDate(fecha.getDate() + 1);
+        fecha.setHours(8,0,0,0);
+        continue;
       }
+
+      fecha.setMinutes(fecha.getMinutes() + especialidad.duracionTurno);
+
+
     }
+
     this.lstTurnosDisponibles = this.lstTurnosDisponibles.sort((a, b) => {
       if (new Date(a.fechaInicio) > new Date(b.fechaInicio)) {
         return 1;
@@ -326,8 +337,7 @@ export class TurnosComponent implements OnInit {
     });
   }
 
-  seleccionarHora($event: any) {
-    let i = $event.target.value;
+  seleccionarHora(i: number) {
 
     let turnoElegido = this.lstTurnosDisponibles[i];
 
@@ -342,19 +352,28 @@ export class TurnosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.tomarTurno(this.lstTurnosDisponibles[i]);
+        this.lstEspecialidades = [];
+        this.lstDiasDeTurnos = [];
+        this.lstTurnosDisponibles = [];
+        this.especialistaElegido = null;
+        this.especialidadElegida = null;
       }
     })
 
   }
   genero15DiasDeTurnosParaEspecialistaYEspecialidad() {
     let fecha = new Date();
-    for (let i = 0; i < 15; i++) {
-      //15 dias
+
+    this.lstDiasDeTurnos = [];
+    this.lstTurnosDisponibles = [];
+    for (let i = 0; i < 15; i++) {//15 dias
       fecha.setDate(fecha.getDate() + 1);
       fecha.setHours(0, 0, 0, 0);
-      if (fecha.getDay() != 0)
-        // si no es domingo
-        this.lstDiasDeTurnos.push(new Date(fecha).toISOString().split('T')[0]);
+      if(this.especialistaElegido!.especialidades.find((x) => x.id == this.especialidadElegida!.id && x.diasDeAtencion[fecha.getDay()]))
+      {
+        if (fecha.getDay() != 0)// si no es domingo
+          this.lstDiasDeTurnos.push(new Date(fecha).toISOString().split('T')[0]);
+      }
     }
   }
 }

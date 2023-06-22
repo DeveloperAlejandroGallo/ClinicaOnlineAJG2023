@@ -1,7 +1,9 @@
-import { UsuarioPaciente } from "./usuario";
+import { Turno } from "./turno";
+import { UsuarioEspecialista, UsuarioPaciente } from "./usuario";
 
 export interface HistoriaClinica {
-  paciente: UsuarioPaciente;
+  id: string,
+  turno: Turno,
   altura: number;
   peso: number;
   temperatura: number;

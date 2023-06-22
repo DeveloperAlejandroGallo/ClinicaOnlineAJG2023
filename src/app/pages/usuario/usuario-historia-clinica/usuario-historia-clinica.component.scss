@@ -1,0 +1,116 @@
+.container {
+  margin-top: 20px;
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .card-subtitle {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 5px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+
+      li {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+.historia-clinica {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .paciente-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .paciente-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 20px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .paciente-details {
+      h3 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+    }
+  }
+
+  .historia-item {
+    margin-bottom: 40px;
+
+    h4 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .datos-clinicos,
+    .datos-dinamicos {
+      margin-top: 20px;
+
+      h5 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+    }
+
+    .datos-dinamicos {
+      ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}

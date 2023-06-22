@@ -10,6 +10,8 @@ import { TurnosComponent } from './pages/turnos/turnos.component';
 import { UsuarioPerfilComponent } from './pages/usuario/usuario-perfil/usuario-perfil.component';
 import { EstaLogueadoGuard } from './guards/esta-logueado.guard';
 import { ErrorComponent } from './pages/error/error.component';
+import { UsuarioHistoriaClinicaComponent } from './pages/usuario/usuario-historia-clinica/usuario-historia-clinica.component';
+import { EspecialistaPacientesComponent } from './pages/especialista/especialista-pacientes/especialista-pacientes.component';
 
 const routes: Routes = [
   {path:'', pathMatch: 'full', redirectTo: 'login'},
@@ -18,9 +20,11 @@ const routes: Routes = [
   {path:'registro-menu', component: RegisterMenuComponent, data: { animation: 'registro' }},
   {path:'registro/:perfil', component: RegisterComponent, data: { animation: 'login' }},
   {path:'admin/usuarios', component: AdminUsuariosComponent, data: { animation: 'home' }},
-  {path:'usuario/turnos', component: UsuarioTurnoComponent, canActivate:[EstaLogueadoGuard]}, //agregar guard
-  {path:'usuario/sacarTurno', component: TurnosComponent, canActivate:[EstaLogueadoGuard]},
-  {path:'usuario/perfil', component: UsuarioPerfilComponent, canActivate:[EstaLogueadoGuard]},
+  {path:'usuario/turnos', component: UsuarioTurnoComponent, data: { animation: 'login' }, canActivate:[EstaLogueadoGuard]},
+  {path:'usuario/sacarTurno', component: TurnosComponent, data: { animation: 'registro' }, canActivate:[EstaLogueadoGuard]},
+  {path:'usuario/perfil', component: UsuarioPerfilComponent, data: { animation: 'home' }, canActivate:[EstaLogueadoGuard]},
+  {path:'usuario/historiaClinica/:id', component: UsuarioHistoriaClinicaComponent, canActivate:[EstaLogueadoGuard]},
+  {path:'especialista/pacientes', component: EspecialistaPacientesComponent, data: { animation: 'home' }, canActivate:[EstaLogueadoGuard]},
 
   {path: 'error', component: ErrorComponent},
   {path: '**', pathMatch: 'full', redirectTo: 'error'}

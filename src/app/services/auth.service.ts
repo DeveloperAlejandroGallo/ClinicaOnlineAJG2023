@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Usuario, UsuarioEspecialista, UsuarioPaciente } from '../models/usuario';
 import { Constantes } from '../models/constantes';
 import { MensajesService } from './mensajes.service';
+import { LogIngresoSistemaService } from './log-ingreso-sistema.service';
+import { LogIngresoSistema } from '../models/log-ingreso-sistema';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class AuthService {
 
   constructor(private usrService: UsuarioService,
               private message: MensajesService,
-              private router: Router) { }
+              private router: Router,
+              private logSrv: LogIngresoSistemaService) { }
 
 
 
@@ -55,6 +58,8 @@ export class AuthService {
         }
 
         this.loguear(this.usuarioActual!);
+
+        this.logSrv.registrarIngreso(this.usuarioActual!);
         this.router.navigate(['/home']);
 
 

@@ -240,6 +240,7 @@ export class RegisterComponent implements OnInit {
       diasDeAtencion: [false, false, false, false, false, false, false],
       duracionTurno: 30,
       consultorio: '',
+      imagen: ''
     };
     espe.nombre = espe.nombre.toUpperCase();
     this.especialidadesService.nuevaEspecialidad(espe);

@@ -8,6 +8,7 @@ import { slideInAnimation } from './animations';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Turno } from './models/turno';
 import { TurnosService } from './services/turnos.service';
+import { LogIngresoSistemaService } from './services/log-ingreso-sistema.service';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,8 @@ export class AppComponent implements OnInit{
               private especialidadesSrv: EspecialidadesService,
               private imagenesSrv: ImagenesService,
               private authSrv: AuthService,
-              private turnoSrv: TurnosService) {
+              private turnoSrv: TurnosService,
+              private logSrv: LogIngresoSistemaService) {
 
   }
 
@@ -53,6 +55,7 @@ export class AppComponent implements OnInit{
     this.imagenesSrv.getImages();
     this.authSrv.traeUsuarioLogueado();
     this.turnoSrv.llenarLista();
+    this.logSrv.llenarlstLosg();
 
   }
 
