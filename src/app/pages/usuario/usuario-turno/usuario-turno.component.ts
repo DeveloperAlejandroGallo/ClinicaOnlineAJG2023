@@ -332,6 +332,7 @@ export class UsuarioTurnoComponent implements OnInit{
     setTimeout(() => {
 
       this.srvMensajes.Exito('Historia clínica guardada');
+      this.formHistoriaClinica.reset();
       this.closeModal();
 
     }, 500);

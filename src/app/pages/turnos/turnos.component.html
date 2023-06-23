@@ -93,7 +93,16 @@
             </div>
           </div>
         </div>
-
+        <hr>
+        <div class="row" *ngIf="proximoTurnoRapido" >
+          <label for=""><b>Próximo Turno Inmediato:</b></label>
+          <div class="col-12">
+            <button class="w-100 btn btn-outline-info btn-lg" (click)="tomarTurno(lstTurnosDisponibles[0])"><i class="fas fa-calendar-plus"></i>
+             {{proximoTurnoRapido.especialista.nombre}}, {{proximoTurnoRapido.especialista.apellido}} - {{proximoTurnoRapido.especialidad.nombre}} -  {{proximoTurnoRapido.fechaInicio | dateisoToDate | date : "yyyy-MM-dd HH:mm"}}
+            </button>
+          </div>
+        </div>
+        <hr>
         <!-- Listado de Fechas -->
         <div *ngIf="lstDiasDeTurnos.length > 0" class="row">
           <div
