@@ -78,13 +78,13 @@
           class="table table-striped table-hover table-bordered border-info"
         >
           <thead>
-            <tr *ngFor="let dato of historia.datosDinamicos">
-              <th>{{ dato.clave }}</th>
+            <tr >
+              <th *ngFor="let dato of historia.datosDinamicos">{{ dato.clave }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let dato of historia.datosDinamicos">
-              <td>{{ dato.valor }}</td>
+            <tr >
+              <td *ngFor="let dato of historia.datosDinamicos">{{ dato.valor }}</td>
             </tr>
           </tbody>
         </table>

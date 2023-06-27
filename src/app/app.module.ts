@@ -39,6 +39,8 @@ import { HoverZoomDirective } from './directives/hover-zoom.directive';
 import { DateisoToDatePipe } from './pipes/dateiso-to-date.pipe';
 import { UsuarioHistoriaClinicaComponent } from './pages/usuario/usuario-historia-clinica/usuario-historia-clinica.component';
 import { EspecialistaPacientesComponent } from './pages/especialista/especialista-pacientes/especialista-pacientes.component';
+import { UsuarioCardComponent } from './components/usuario-card/usuario-card.component';
+import { PacientesListaComponent } from './components/pacientes-lista/pacientes-lista.component';
 
 
 
@@ -65,7 +67,9 @@ import { EspecialistaPacientesComponent } from './pages/especialista/especialist
     HoverZoomDirective,
     DateisoToDatePipe,
     UsuarioHistoriaClinicaComponent,
-    EspecialistaPacientesComponent
+    EspecialistaPacientesComponent,
+    UsuarioCardComponent,
+    PacientesListaComponent
   ],
   imports: [
     AppRoutingModule,

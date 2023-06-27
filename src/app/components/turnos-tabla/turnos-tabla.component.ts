@@ -44,7 +44,7 @@ export class TurnosTablaComponent implements OnInit {
   //botones
   //Paciente
   verCancelarTurnoPaciente(turno: Turno): boolean {
-    return turno.estado != (EstadoTurno.Realizado && EstadoTurno.Cancelado);
+    return turno.estado == (EstadoTurno.Pendiente || EstadoTurno.Aceptado);
   }
 
   verCompletarEncuesta(turno: Turno) {
@@ -58,31 +58,18 @@ export class TurnosTablaComponent implements OnInit {
   }
   //Especialista
   verCancelarTurnoEspecialista(turno: Turno): boolean {
-    return (
-      turno.estado !=
-      ( EstadoTurno.Realizado &&
-        EstadoTurno.Aceptado &&
-        EstadoTurno.Rechazado &&
-        EstadoTurno.Cancelado)
-    );
+    return turno.estado == EstadoTurno.Pendiente;
   }
 
   verAceptarTurnoEspecialista(turno: Turno): boolean {
-    return (
-      turno.estado !=
-      ( EstadoTurno.Realizado &&
-        EstadoTurno.Cancelado &&
-        EstadoTurno.Rechazado &&
-        EstadoTurno.Aceptado)
-    );
+    return turno.estado == EstadoTurno.Pendiente;
+
   }
   verRechazarTurnoEspecialista(turno: Turno): boolean {
     return (
-      turno.estado !=
-      ( EstadoTurno.Realizado &&
-        EstadoTurno.Aceptado &&
-        EstadoTurno.Cancelado &&
-        EstadoTurno.Rechazado)
+      turno.estado ==
+      ( EstadoTurno.Pendiente ||
+        EstadoTurno.Aceptado  )
     );
   }
   verFinalizarTurnoEspecialista(turno: Turno): boolean {

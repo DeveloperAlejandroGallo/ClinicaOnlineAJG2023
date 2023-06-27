@@ -135,7 +135,11 @@ export class UsuarioTurnoComponent implements OnInit{
     }
 
   tieneHistoriaClinica() {
-    return this.historiasSrv.lstHistoriasClinicas.some(x => x.turno.id=this.turno.id);
+    let result = false;
+    console.log('this.historiasSrv.lstHistoriasClinicas',this.historiasSrv.lstHistoriasClinicas)
+    result =  this.historiasSrv.lstHistoriasClinicas.some(hc => hc.turno && hc.turno.id == this.turno.id);
+
+    return result;
   }
 
     recibirTurno($event: Turno){
@@ -179,19 +183,28 @@ export class UsuarioTurnoComponent implements OnInit{
         case AccionesTurnos.Calificar:
           this.calificarAtencion();
           break;
-        // case 'resenia':
-        //   this.leerResenia();
-        //   break;
+        case 'Reseniar':
+          this.guardarResenia();
+          break;
         default:
           break;
       }
     }
+  guardarResenia() {
+    console.log('Reseñar turno');
+    if(this.turno!.resenia != ""){
+      this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Cancelado,this.turno!.comentario, this.turno.resenia);
+      this.srvMensajes.Info('Reseña actualizada');
+      }
+    else
+      this.srvMensajes.Warning('Debe ingresar una reseña');
+  }
 
     //todos
     cancelarTurno() {
       console.log('Cancelar turno');
       if(this.turno!.comentario != ""){
-        this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Cancelado,this.turno!.comentario);
+        this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Cancelado,this.turno!.comentario, this.turno.resenia);
         this.srvMensajes.Info('Turno cancelado');
         }
       else
@@ -206,7 +219,7 @@ export class UsuarioTurnoComponent implements OnInit{
     rechazarTurno() {
       console.log('Rechazar turno');
       if(this.turno!.comentario != ""){
-        this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Rechazado,this.turno!.comentario);
+        this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Rechazado,this.turno!.comentario, this.turno.resenia);
         this.srvMensajes.Info('Turno rechazado');
       }
       else
@@ -220,7 +233,7 @@ export class UsuarioTurnoComponent implements OnInit{
         return;
       }
       if(this.turno!.comentario != "" || this.turno!.resenia != ""){
-        this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Realizado,this.turno!.comentario);
+        this.srvTurnos.cambiarEstadoConComentario(this.turno?.id, EstadoTurno.Realizado,this.turno!.comentario, this.turno!.resenia);
         this.srvTurnos.actualizarFechaFin(this.turno?.id);
         this.srvMensajes.Info('Turno finalizado');
         }

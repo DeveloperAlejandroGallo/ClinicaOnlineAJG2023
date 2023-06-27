@@ -5,14 +5,15 @@
 
 .star {
   display: inline-block;
-  width: 20px; /* Tamaño de cada estrella */
-  height: 20px;
+  width: 40px; /* Tamaño de cada estrella */
+  height: 40px;
   background-image: url('../../../../assets/images/icons/star0.png'); /* Imagen de estrella vacía */
   background-size: cover;
+  margin: 2px;
 }
 
 .star.filled {
-  background-image: url('../../../../assets/images/icons/star0.png'); /* Imagen de estrella llena */
+  background-image: url('../../../../assets/images/icons/star1.png'); /* Imagen de estrella llena */
 }
 
 .container {

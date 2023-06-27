@@ -77,7 +77,8 @@ export class TurnosService {
   cambiarEstadoConComentario(
     id: string | undefined,
     estado: string,
-    comentario: string
+    comentario: string,
+    resenia: string
   ) {
     const coleccion = collection(this.firestore, this.colectionFirestore);
     const documento = doc(coleccion, id);
@@ -89,6 +90,7 @@ export class TurnosService {
       estado: estado,
       comentario: comentario,
       fechaEstado:fecha.toISOString(),
+      resenia: resenia,
     });
   }
 

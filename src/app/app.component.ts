@@ -5,10 +5,13 @@ import { ImagenesService } from './services/imagenes.service';
 import { AuthService } from './services/auth.service';
 import { RouterOutlet } from '@angular/router';
 import { slideInAnimation } from './animations';
-import { animate, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger, state } from '@angular/animations';
 import { Turno } from './models/turno';
 import { TurnosService } from './services/turnos.service';
 import { LogIngresoSistemaService } from './services/log-ingreso-sistema.service';
+import { HistoriaClinicaService } from './services/historia-clinica.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -43,7 +46,8 @@ export class AppComponent implements OnInit{
               private imagenesSrv: ImagenesService,
               private authSrv: AuthService,
               private turnoSrv: TurnosService,
-              private logSrv: LogIngresoSistemaService) {
+              private logSrv: LogIngresoSistemaService,
+              private historiasClinicasSrv: HistoriaClinicaService) {
 
   }
 
@@ -56,6 +60,8 @@ export class AppComponent implements OnInit{
     this.authSrv.traeUsuarioLogueado();
     this.turnoSrv.llenarLista();
     this.logSrv.llenarlstLosg();
+    this.historiasClinicasSrv.llenarLstHistoriasClinicas();
+
 
   }
 

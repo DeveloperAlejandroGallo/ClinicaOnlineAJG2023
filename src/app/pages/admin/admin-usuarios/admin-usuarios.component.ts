@@ -42,9 +42,9 @@ export class AdminUsuariosComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.listaUsuariosEspecialistas = this.usuariosSrv.listadoUsuarios as Array<UsuarioEspecialista>;
-    this.listaUsuarios = this.usuariosSrv.listadoUsuarios;
     this.usuarioConectado = this.auth.logInfo();
+    this.listaUsuariosEspecialistas = this.usuariosSrv.listadoUsuarios as Array<UsuarioEspecialista>;
+    this.listaUsuarios = this.usuariosSrv.listadoUsuarios.filter(usuario => usuario.id != this.usuarioConectado?.id);
 
   }
 
@@ -80,11 +80,7 @@ export class AdminUsuariosComponent implements OnInit{
 
   }
 
-  aprobarCuenta(){
-    this.usuariosSrv.aprobarCuenta(this.usuarioSeleccionado as UsuarioEspecialista);
-    this.mensajeSrv.Exito('Cuenta aprobada');
-    this.cuentaAprobada = true;
-  }
+
 
   irAHistoriaClinica(){
     const id = this.usuarioSeleccionado?.id;

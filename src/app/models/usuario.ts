@@ -11,6 +11,7 @@ export interface Usuario {
   foto: string;
   logueado: boolean;
   perfil: string;
+
 }
 
 

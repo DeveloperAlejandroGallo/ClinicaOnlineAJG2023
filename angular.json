@@ -18,7 +18,10 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "sweetalert2"
+              "sweetalert2",
+              "exceljs",
+              "pdfmake/build/pdfmake",
+              "pdfmake/build/vfs_fonts"
            ],
             "outputPath": "dist/clinica-online-ajg2023",
             "index": "src/index.html",

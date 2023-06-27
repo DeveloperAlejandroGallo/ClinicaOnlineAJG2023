@@ -1,0 +1,109 @@
+<div class="card mb-3" style="max-width: 1080px" (click)="exportarTurnos()">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img
+        [src]="usuarioSeleccionado.foto"
+        class="img-fluid rounded-start"
+        alt="usuario..."
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">
+          {{ usuarioSeleccionado.nombre }}, {{ usuarioSeleccionado.apellido }}
+        </h5>
+        <div class="form needs-validation">
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="you@example.com"
+              /> {{ usuarioSeleccionado.email }}
+            </div>
+
+            <div class="col-6">
+              <label for="dni" class="form-label">DNI</label>
+              <input type="text" class="form-control" id="dni" placeholder="99999999" />{{ usuarioSeleccionado.dni }}
+            </div>
+
+            <div class="col-6">
+              <label for="edad" class="form-label">Edad</label>
+              <input type="text" class="form-control" id="edad" placeholder="Edad" />{{ usuarioSeleccionado.edad }}
+            </div>
+            <!--  Paciente -->
+            <hr class="my-4" />
+            <div *ngIf="usuarioSeleccionado.perfil == 'paciente'">
+              <div class="col-6">
+                <label for="obrasocial" class="form-label">Obra Social</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="obrasocial"
+                  placeholder="Obra Social"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4" />
+      <div *ngIf="usuarioSeleccionado.perfil == 'paciente'">
+        <h5 class="mb-3">Últimos turnos</h5>
+        <ul class="list-group list-group-flush list-group-item-info">
+          <li
+            class="list-group-item d-flex justify-content-between align-items-start"
+            *ngFor="let turno of ultimos3TurnosTomados"
+          >
+            <i class="bi bi-check"></i>
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">{{ turno.especialidad.nombre }}</div>
+              {{
+                turno.fechaInicio | dateisoToDate | date : "yyyy-MM-dd HH:mm"
+              }}
+              - {{ turno.especialista.nombre }},
+              {{ turno.especialista.apellido }}
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="usuarioSeleccionado.perfil == 'especialista'">
+        <hr class="my-4" />
+
+        <h4 class="mb-3">Especialidades</h4>
+
+        <div class="col-12">
+          <ul *ngFor="let esp of especialidades" class="list-group list-group-flush">
+            <li class="list-group-item">{{ esp.nombre.toUpperCase() }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div *ngIf="usuarioSeleccionado.perfil == 'paciente' && tieneHistoriaClinica()">
+          <button
+            class="w-100 btn btn-outline-info btn-lg"
+            (click)="irAHistoriaClinica()"
+          >
+            <i class="bi bi-file-earmark-medical"></i> Ver Historia Clinica
+          </button>
+        </div>
+
+        <div *ngIf="usuarioSeleccionado.perfil == 'especialista'">
+          <button
+            class="w-100 btn btn-outline-{{tieneCuentaAprobada()?'success':'danger'}} btn-lg"
+            type="submit"
+            [disabled]="tieneCuentaAprobada()"
+            (click)="aprobarCuenta()"
+          >
+            {{botonEspecialista}}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- -------------------------------------------------------------------------------------- -->
+

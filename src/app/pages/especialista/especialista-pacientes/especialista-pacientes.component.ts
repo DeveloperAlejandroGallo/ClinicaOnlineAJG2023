@@ -1,6 +1,8 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, distinct, map } from 'rxjs';
+import { Turno } from 'src/app/models/turno';
 import { Usuario, UsuarioEspecialista, UsuarioPaciente } from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { TurnosService } from 'src/app/services/turnos.service';
@@ -9,20 +11,31 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 @Component({
   selector: 'app-especialista-pacientes',
   templateUrl: './especialista-pacientes.component.html',
-  styleUrls: ['./especialista-pacientes.component.scss']
+  styleUrls: ['./especialista-pacientes.component.scss'],
+  animations:[
+    trigger('rotateDiagonal', [
+      transition(':enter', [
+        animate('0.4s', style({ opacity: 1, transform: 'rotate3d(-1, 1, 0, 360deg)' }))
+      ])
+    ])
+  ]
 })
 export class EspecialistaPacientesComponent implements OnInit{
 
-  lstPacientesAtendidos: Array<UsuarioPaciente> = [];
   pacienteSeleccionado: UsuarioPaciente | undefined;
-  pacientes$: Observable<UsuarioPaciente[]> = this.turnosSrv.allTurnos$.pipe(
-    map(turnos => turnos.filter(t => t.especialista.id == this.auth.logInfo()!.id).map(turno => turno.paciente!)),
-    distinct(paciente => paciente)
-  );
+
   verHistoriaClinica:boolean = false;
   verOcultar: string = "Ver";
 
   usuarioConectado: UsuarioEspecialista;
+  ultimosTurnosTomados: Array<Turno> = [];
+
+  lstPacientesAtendidos: Array<UsuarioPaciente> = [];
+
+  pacientes$: Observable<UsuarioPaciente[]> = this.turnosSrv.allTurnos$.pipe(
+    map(turnos => turnos.filter(t => t.especialista.id == this.auth.logInfo()!.id).map(turno => turno.paciente!)),
+    distinct(paciente => paciente)
+  );
 
   constructor(
     private turnosSrv: TurnosService,
@@ -30,20 +43,33 @@ export class EspecialistaPacientesComponent implements OnInit{
     private router: Router,
     private auth: AuthService)
     {
+
+      this.usuarioConectado = this.auth.logInfo() as UsuarioEspecialista;
+
       this.pacientes$.subscribe(users =>
         users.forEach(user => {
-          if(!this.lstPacientesAtendidos.find(u => u.id == user.id))
+          if(!this.lstPacientesAtendidos.some(u => u.id == user.id))
             this.lstPacientesAtendidos.push(user);
         })
         );
-      this.usuarioConectado = this.auth.logInfo() as UsuarioEspecialista;
     }
 
   ngOnInit(): void {
   }
 
   seleccionarUsuario(i:number){
-    this.pacienteSeleccionado = this.lstPacientesAtendidos[i];
+    console.log('En espe-pac',this.pacienteSeleccionado);
+    this.ultimosTurnosTomados = this.turnosSrv.listadoTurnos
+                                .filter(turno => turno.paciente!.id == this.pacienteSeleccionado!.id)
+                                .sort((a, b) => { //de mayor a menor
+                                  if (new Date(a.fechaInicio) > new Date(b.fechaInicio)) {
+                                    return -1;
+                                  } else if (new Date(a.fechaInicio) < new Date(b.fechaInicio)) {
+                                    return 1;
+                                  } else {
+                                    return 0;
+                                  }
+                                });
 
   }
 
@@ -57,5 +83,9 @@ export class EspecialistaPacientesComponent implements OnInit{
     const id = this.pacienteSeleccionado?.id;
     const perfil = this.pacienteSeleccionado?.perfil;
     this.router.navigate(['/usuario/historiaClinica', id]);
+  }
+
+  recibirPaciente($event: any){
+    this.pacienteSeleccionado = $event as UsuarioPaciente;
   }
 }

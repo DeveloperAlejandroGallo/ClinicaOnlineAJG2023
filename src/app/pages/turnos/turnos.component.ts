@@ -169,7 +169,7 @@ export class TurnosComponent implements OnInit {
 
     //ordenar listado por fechaInicio
     this.lstTurnosDisponibles = this.lstTurnosDisponibles.sort((a, b) => {
-      if (new Date(a.fechaInicio) > new Date(b.fechaInicio)) {
+    if (new Date(a.fechaInicio) > new Date(b.fechaInicio)) {
         return 1;
       } else if (new Date(a.fechaInicio) < new Date(b.fechaInicio)) {
         return -1;
