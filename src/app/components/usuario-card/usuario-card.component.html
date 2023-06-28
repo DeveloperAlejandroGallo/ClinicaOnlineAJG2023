@@ -12,6 +12,7 @@
         <h5 class="card-title">
           {{ usuarioSeleccionado.nombre }}, {{ usuarioSeleccionado.apellido }}
         </h5>
+        <small class="text-muted"><strong>({{usuarioSeleccionado.perfil}})</strong></small>
         <div class="form needs-validation">
           <div class="row g-3">
             <div class="col-12">
@@ -21,17 +22,30 @@
                 class="form-control"
                 id="email"
                 placeholder="you@example.com"
-              /> {{ usuarioSeleccionado.email }}
+                value="{{ usuarioSeleccionado.email }}"
+              />
             </div>
 
             <div class="col-6">
               <label for="dni" class="form-label">DNI</label>
-              <input type="text" class="form-control" id="dni" placeholder="99999999" />{{ usuarioSeleccionado.dni }}
+              <input
+                type="text"
+                class="form-control"
+                id="dni"
+                placeholder="99999999"
+                value="{{ usuarioSeleccionado.dni }}"
+              />
             </div>
 
             <div class="col-6">
               <label for="edad" class="form-label">Edad</label>
-              <input type="text" class="form-control" id="edad" placeholder="Edad" />{{ usuarioSeleccionado.edad }}
+              <input
+                type="text"
+                class="form-control"
+                id="edad"
+                placeholder="Edad"
+                value="{{ usuarioSeleccionado.edad }}"
+              />
             </div>
             <!--  Paciente -->
             <hr class="my-4" />
@@ -43,6 +57,7 @@
                   class="form-control"
                   id="obrasocial"
                   placeholder="Obra Social"
+                  value="{{ usuarioPaciente!.obraSocial }}"
                 />
               </div>
             </div>
@@ -75,13 +90,25 @@
         <h4 class="mb-3">Especialidades</h4>
 
         <div class="col-12">
-          <ul *ngFor="let esp of especialidades" class="list-group list-group-flush">
-            <li class="list-group-item">{{ esp.nombre.toUpperCase() }}</li>
+          <ul class="list-group list-group-flush list-group-item-info">
+            <li
+              *ngFor="let esp of especialidades"
+              class="list-group-item d-flex justify-content-between align-items-start"
+            >
+              <i class="bi bi-file-medical"></i>
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">{{ esp.nombre.toUpperCase() }}</div>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
       <div class="card-footer">
-        <div *ngIf="usuarioSeleccionado.perfil == 'paciente' && tieneHistoriaClinica()">
+        <div
+          *ngIf="
+            usuarioSeleccionado.perfil == 'paciente' && tieneHistoriaClinica()
+          "
+        >
           <button
             class="w-100 btn btn-outline-info btn-lg"
             (click)="irAHistoriaClinica()"
@@ -92,18 +119,18 @@
 
         <div *ngIf="usuarioSeleccionado.perfil == 'especialista'">
           <button
-            class="w-100 btn btn-outline-{{tieneCuentaAprobada()?'success':'danger'}} btn-lg"
+            class="w-100 btn btn-outline-{{
+              tieneCuentaAprobada() ? 'success' : 'danger'
+            }} btn-lg"
             type="submit"
             [disabled]="tieneCuentaAprobada()"
             (click)="aprobarCuenta()"
           >
-            {{botonEspecialista}}
+            {{ botonEspecialista }}
           </button>
         </div>
-
       </div>
     </div>
   </div>
 </div>
 <!-- -------------------------------------------------------------------------------------- -->
-

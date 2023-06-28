@@ -80,6 +80,37 @@ export class TurnosTablaComponent implements OnInit {
     return (
       turno.resenia != ('' && null && undefined) ||
       turno.comentario != ('' && null && undefined)
-    );
+    ) && turno.estado != (EstadoTurno.Cancelado && EstadoTurno.Rechazado);
+  }
+
+  colorEstado(estado: string): string{
+    let color = 'primary';
+    console.log(estado);
+    switch(estado){
+      case EstadoTurno.Pendiente:
+        color = 'secondary';
+        break;
+      case EstadoTurno.Aceptado:
+        color = 'primary';
+        break;
+      case EstadoTurno.Realizado:
+        color = 'success';
+        break;
+      case EstadoTurno.Cancelado:
+        color = 'warning';
+        break;
+      case EstadoTurno.Rechazado:
+        color = 'danger';
+        break;
+      case EstadoTurno.Libre:
+        color = 'light';
+        break;
+      default:
+        color = 'primary';
+        break;
+
+    }
+
+    return color;
   }
 }

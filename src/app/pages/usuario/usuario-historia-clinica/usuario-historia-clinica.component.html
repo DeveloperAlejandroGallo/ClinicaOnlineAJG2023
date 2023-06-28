@@ -21,28 +21,47 @@
       <p>Obra Social: {{ paciente.obraSocial }}</p>
     </div>
   </div>
+  <hr>
+  <div class="input-group mb-3" >
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="specialitySelect"
+        >Especialidades</label
+      >
+    </div>
+    <select [(ngModel)]="especialidadSeleccionadaId"
+      class="custom-select"
+      id="specialitySelect"
+      (change)="cambiarEspecialidad()"
+    >
+      <option value="" selected>
+        Todas
+      </option>
+      <option
+        *ngFor="let spec of listaEspecialidadesDelPaciente"
+        [ngValue]="spec.id"
+      >
+        {{ spec.nombre }}
+      </option>
+    </select>
+  </div>
+  <hr>
   <div class="historias-list">
     <div class="historia-item" *ngFor="let historia of historiasClinicas">
-      <h4>Historia Clínica - Turno {{ historia.turno.id }}</h4>
+      <h4>Turno:
+        {{
+          historia.turno.fechaInicio
+            | dateisoToDate
+            | date : "yyyy-MM-dd HH:mm"
+        }}</h4>
       <div class="row">
-        <div class="col-md-4">
-          <p>
-            <strong>Fecha:</strong>
-            {{
-              historia.turno.fechaInicio
-                | dateisoToDate
-                | date : "yyyy-MM-dd HH:mm"
-            }}
-          </p>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <p>
             <strong>Especialista:</strong>
             {{ historia.turno.especialista.nombre }}
             {{ historia.turno.especialista.apellido }}
           </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <p>
             <strong>Especialidad:</strong>
             {{ historia.turno.especialidad.nombre }}

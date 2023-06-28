@@ -38,7 +38,7 @@
           {{turno.fechaInicio | dateisoToDate  | date: "HH:mm"}}</small>
       </div>
       <div class="d-flex justify-content-between align-items-center">
-        <span class="badge bg-primary rounded-pill align-self-end"><b>{{ turno.estado.toUpperCase() }}</b></span>
+        <span class="badge bg-{{colorEstado(turno.estado)}} rounded-pill align-self-end"><b>{{ turno.estado.toUpperCase() }}</b></span>
       </div>
       <div *ngIf="usuarioConectado?.perfil == 'admin'" class="d-flex justify-content-between align-items-center ">
         <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning"
