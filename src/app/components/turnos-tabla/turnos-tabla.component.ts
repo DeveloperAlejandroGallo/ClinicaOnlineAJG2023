@@ -85,7 +85,6 @@ export class TurnosTablaComponent implements OnInit {
 
   colorEstado(estado: string): string{
     let color = 'primary';
-    console.log(estado);
     switch(estado){
       case EstadoTurno.Pendiente:
         color = 'secondary';

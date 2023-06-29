@@ -20,6 +20,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { MensajesService } from 'src/app/services/mensajes.service';
 import { HistoriaClinicaService } from 'src/app/services/historia-clinica.service';
 import * as ExcelJS from 'exceljs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-usuario-card',
@@ -42,7 +43,8 @@ export class UsuarioCardComponent implements OnInit {
     private router: Router,
     private usuariosSrv: UsuarioService,
     private mensajeSrv: MensajesService,
-    private historiasClinicasSrv: HistoriaClinicaService
+    private historiasClinicasSrv: HistoriaClinicaService,
+    private authSrv: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +108,10 @@ export class UsuarioCardComponent implements OnInit {
   }
 
   exportarTurnos() {
+
+    if(this.authSrv.logInfo()?.perfil != Perfil.admin){
+      return;
+    }
     const workbook = new ExcelJS.Workbook();
     const turnos = this.turnosSrv.listadoTurnos.filter(
       (turno) =>
@@ -147,7 +153,7 @@ export class UsuarioCardComponent implements OnInit {
 
     // Agrega los datos de cada usuario a las filas de la hoja de cálculo
     turnos.forEach((turno: any) => {
-      const row = [turno.fechaInicio, turno.especialidad.nombre];
+      const row = [this.formatISOtoDateString(turno.fechaInicio), turno.especialidad.nombre];
 
       if (perfil === Perfil.paciente) {
         row.push(
@@ -185,6 +191,19 @@ export class UsuarioCardComponent implements OnInit {
     const minutes = ('0' + date.getMinutes()).slice(-2);
 
     const formattedDate = `${year}-${month}-${day} ${hours}${minutes}`;
+
+    return formattedDate;
+  }
+
+  formatISOtoDateString(fecha: string): string {
+    const date = new Date(fecha);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
 
     return formattedDate;
   }

@@ -13,7 +13,7 @@
       let turno of listadoDeTurnos
         | filtroTurnos : usuarioConectado : filtroNombre;
       let i = index"
-      class="list-group-item d-flex justify-content-between " appHighLigth="">
+      class="list-group-item d-flex justify-content-between " appHighLigth="" (click)="accionSeleccionada('', turno)">
     <div>
       <div class="d-flex justify-content-between align-items-center" *ngIf="usuarioConectado?.perfil != 'paciente'">
         <h6 class="my-0">Paciente:</h6>
@@ -41,24 +41,24 @@
         <span class="badge bg-{{colorEstado(turno.estado)}} rounded-pill align-self-end"><b>{{ turno.estado.toUpperCase() }}</b></span>
       </div>
       <div *ngIf="usuarioConectado?.perfil == 'admin'" class="d-flex justify-content-between align-items-center ">
-        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning"
+        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning" data-toggle="tooltip" title="Cancelar"
           (click)="accionSeleccionada('Cancelar',turno)">
-          <i class="fas fa-times"></i> Cancelar
+          <i class="fas fa-times"></i>
         </button>
       </div>
       <div class="d-flex justify-content-between align-items-center"
         *ngIf="usuarioConectado?.perfil == 'paciente'">
-        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-outline-warning"
+        <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-outline-warning" data-toggle="tooltip" title="Cancelar"
           (click)="accionSeleccionada('Cancelar',turno)">
           <i class="fas fa-times"></i>
         </button>
-        <button *ngIf="verCompletarEncuesta(turno)" class="btn btn-outline-primary" (click)="accionSeleccionada('LlenarEncuesta',turno)">
+        <button *ngIf="verCompletarEncuesta(turno)" class="btn btn-outline-primary" data-toggle="tooltip" title="Encuesta" (click)="accionSeleccionada('LlenarEncuesta',turno)">
           <i class="fas fa-poll"></i>
         </button>
-        <button *ngIf="verCalificarAtencion(turno)" class="btn btn-outline-info" (click)="accionSeleccionada('Calificar',turno)">
+        <button *ngIf="verCalificarAtencion(turno)" class="btn btn-outline-info" data-toggle="tooltip" title="Calificar" (click)="accionSeleccionada('Calificar',turno)">
           <i class="fas fa-star"></i>
         </button>
-        <button *ngIf="verResenia(turno)" class="btn btn-outline-dark" (click)="accionSeleccionada('Reseniar',turno)">
+        <button *ngIf="verResenia(turno)" class="btn btn-outline-dark" data-toggle="tooltip" title="Reseña" (click)="accionSeleccionada('Reseniar',turno)">
           <i class="fas fa-comment"></i>
         </button>
       </div>

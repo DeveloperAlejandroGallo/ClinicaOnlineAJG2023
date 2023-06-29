@@ -23,13 +23,7 @@ export class TurnosComponent implements OnInit {
   @ViewChild('selectEspecialidad') selectEspecialidadRef!: ElementRef;
   @ViewChild('selectEspecialista') selectEspecialistaRef!: ElementRef;
 
-  resetSelect() {
-    let selectElement: HTMLSelectElement =
-      this.selectEspecialidadRef.nativeElement;
-    selectElement.selectedIndex = -1;
-    selectElement = this.selectEspecialistaRef.nativeElement;
-    selectElement.selectedIndex = -1;
-  }
+
   @Input() usuarioPaciente!: UsuarioPaciente;
 
   usuarioConectado = this.authSrv.logInfo();
@@ -57,13 +51,11 @@ export class TurnosComponent implements OnInit {
     private authSrv: AuthService,
     private mensajeSrv: MensajesService
   ) {
-    this.lstTurnosTomados = this.turnoSrv.listadoTurnos;
-    console.log('Tomados', this.lstTurnosTomados);
-    // this.turnoSrv.allTurnos$.subscribe((turnos: Array<Turno>) => {
-    //   this.lstTurnosTomados = turnos;
-    //   console.log('Tomados',this.lstTurnosTomados);
+    // this.lstTurnosTomados = this.turnoSrv.listadoTurnos;
 
-    // });
+    this.turnoSrv.allTurnos$.subscribe((turnos: Array<Turno>) => {
+      this.lstTurnosTomados = turnos;
+    });
   }
 
   ngOnInit(): void {
@@ -198,11 +190,11 @@ export class TurnosComponent implements OnInit {
 
   seleccionarEspecialista(i: number) {
     this.especialistaElegido = this.lstEspecialistas[i];
-    console.log('especialisat Elegido:', this.especialistaElegido);
     this.lstEspecialidades = this.especialistaElegido.especialidades;
     this.lstDiasDeTurnos = [];
     this.lstTurnosDisponibles = [];
     this.especialidadElegida = null;
+    this.proximoTurnoRapido = undefined;
   }
 
   seleccionarEspecialidad(i: number) {
@@ -212,21 +204,18 @@ export class TurnosComponent implements OnInit {
 
   seleccionarFecha(i: number) {
     this.fechaElegida = this.lstDiasDeTurnos[i];
-    let fecha = new Date(this.fechaElegida);
+    let fecha = new Date(this.fechaElegida+'T12:00:00.000Z');
     fecha.setHours(8, 0, 0, 0);
 
-    console.log('fecha elegida:', fecha.toISOString());
+
     let especialidad = this.especialidadElegida!;
     let especialista = this.especialistaElegido!;
     let horaFinDelDia = fecha.getDay() != 6 ? 20 : 14; // si es sabado es hasta las 14
 
     this.lstTurnosDisponibles = [];
 
-    while (fecha.getHours() < horaFinDelDia) {
-      console.log('Ingreso:', fecha.toISOString());
 
-      // si el especialista atiende ese dia
-      console.log('especialista atiende ese dia');
+    while (fecha.getHours() < horaFinDelDia) {
       let turno: Turno = {
         id: '',
         especialista: especialista,
@@ -242,6 +231,8 @@ export class TurnosComponent implements OnInit {
         encuesta: '',
         valorizacion: 0,
       };
+
+      console.log('turno generado:', turno.fechaInicio);
       let turnoLibre = !this.lstTurnosTomados.some((turnoTomado) => {
         return (
           turnoTomado.especialista.id == turno.especialista.id &&
@@ -316,14 +307,15 @@ export class TurnosComponent implements OnInit {
           );
       }
     }
-    console.log('lstDiasDeTurnos:', this.lstDiasDeTurnos)
     this.calcularTurnoInmediatoParaFecha(this.lstDiasDeTurnos[0]);
   }
 
   calcularTurnoInmediatoParaFecha(fecha: string) {
-    let fechaInicio = new Date(fecha);
+
+    let fechaInicio = new Date(fecha+'T12:00:00.000Z');
     fechaInicio.setHours(8, 0, 0, 0);
-    let fechaFin = new Date(fecha);
+
+    let fechaFin = new Date(fecha+'T12:00:00.000Z');
     fechaFin.setHours(20, 0, 0, 0);
 
     for (let i = 0; i < 15; i++) {
@@ -343,6 +335,7 @@ export class TurnosComponent implements OnInit {
           encuesta: '',
           valorizacion: 0,
         };
+
         let turnoLibre = !this.lstTurnosTomados.some((turnoTomado) => {
           return (
             turnoTomado.especialista.id == turno.especialista.id &&
@@ -365,5 +358,19 @@ export class TurnosComponent implements OnInit {
       fechaInicio.setHours(8, 0, 0, 0);
     }
 
+  }
+
+  resetSelect() {
+    let selectElement: HTMLSelectElement =
+      this.selectEspecialidadRef.nativeElement;
+    selectElement.selectedIndex = -1;
+    selectElement = this.selectEspecialistaRef.nativeElement;
+    selectElement.selectedIndex = -1;
+
+
+    this.lstDiasDeTurnos = [];
+    this.lstTurnosDisponibles = [];
+    this.especialidadElegida = null;
+    this.proximoTurnoRapido = undefined;
   }
 }

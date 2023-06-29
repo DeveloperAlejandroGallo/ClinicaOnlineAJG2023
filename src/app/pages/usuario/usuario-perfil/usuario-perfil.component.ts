@@ -37,9 +37,9 @@ export class UsuarioPerfilComponent {
   }
 
   marcarDia($event: any, indiceDia: number, especialidadId: string, indiceEspecialidad: number){
-    console.log('Marcando',$event.target.value);
-
-    this.usuarioEspecialista.especialidades[indiceEspecialidad].diasDeAtencion[indiceDia] = $event.target.value;
+    console.log('Marcando',$event);
+    let marcado = $event as boolean;
+    this.usuarioEspecialista.especialidades[indiceEspecialidad].diasDeAtencion[indiceDia] = marcado;
     this.usuarioSrv.actualizarEspecialista(this.usuarioEspecialista);
   }
 

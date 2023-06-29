@@ -109,7 +109,7 @@
             </div>
           </div>
 
-          <div *ngIf="verCalificarAtencion">
+          <div *ngIf="verCalificarAtencion || verInfo">
             <h4 class="mb-3">Calificación</h4>
             <div class="rating">
               <span
@@ -142,7 +142,8 @@
               verCalificarAtencion ||
               verRechazarTurnoEspecialista ||
               verFinalizarTurnoEspecialista ||
-              verResenia
+              verResenia ||
+              verInfo
             "
           >
             <div class="col-12">
@@ -157,7 +158,7 @@
             </div>
           </div>
 
-          <div *ngIf="verFinalizarTurnoEspecialista || verResenia">
+          <div *ngIf="verFinalizarTurnoEspecialista || verResenia || verInfo">
             <div class="col-12">
               <label for="resenia" class="form-label">Reseña</label>
               <textarea
@@ -169,7 +170,7 @@
               ></textarea>
             </div>
           </div>
-          <div *ngIf="verCompletarEncuesta">
+          <div *ngIf="verCompletarEncuesta || verInfo">
             <div class="col-12">
               <label for="encuesta" class="form-label">Encuesta</label>
               <textarea
@@ -189,7 +190,15 @@
           >
             Completar Historia Clinica
           </button>
+          <div *ngIf="tieneHistoriaClinica()">
           <button
+            class="w-100 btn btn-outline-info btn-lg"
+            (click)="irAHistoriaClinica()"
+          >
+            <i class="bi bi-file-earmark-medical"></i> Ver Historia Clinica
+          </button>
+        </div>
+          <button *ngIf="!verInfo"
             [ngClass]="claseColorBoton"
             class="w-100 btn btn-outline-primary btn-lg"
             (click)="onSubmit()"

@@ -1,7 +1,9 @@
 import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AccionesTurnos } from 'src/app/enums/acciones-turnos';
 import { EstadoTurno } from 'src/app/enums/estado-turno';
+import { Perfil } from 'src/app/enums/perfiles';
 import { HistoriaClinica } from 'src/app/models/historia-clinica';
 import { Turno } from 'src/app/models/turno';
 import { AuthService } from 'src/app/services/auth.service';
@@ -46,7 +48,8 @@ export class UsuarioTurnoComponent implements OnInit{
     constructor(private srvTurnos: TurnosService,
                 private srvMensajes: MensajesService,
                 private authSrv: AuthService,
-                private historiasSrv: HistoriaClinicaService) {
+                private historiasSrv: HistoriaClinicaService,
+                private router: Router) {
 
     this.formHistoriaClinica = new FormGroup(
       {
@@ -76,11 +79,13 @@ export class UsuarioTurnoComponent implements OnInit{
     //Especialista y paciente
     verResenia: boolean = false;
 
+    verInfo: boolean = false;
+
 
     ngOnInit(): void {
       this.usuarioConectado = this.authSrv.logInfo();
 
-      this.Titulo = this.usuarioConectado!.perfil == 'admin' ? 'Turnos' : 'Mis turnos';
+      this.Titulo = this.usuarioConectado!.perfil == Perfil.admin ? 'Turnos' : 'Mis turnos';
     }
 
     cambiarCalificacion(calificacion: number) {
@@ -91,6 +96,7 @@ export class UsuarioTurnoComponent implements OnInit{
     recibirAccion($event: string) {
       this.limpiarControles();
       this.accion = $event;
+      this.verInfo = false;
 
       console.log('accion',this.accion);
       switch (this.accion) {
@@ -130,6 +136,7 @@ export class UsuarioTurnoComponent implements OnInit{
           this.claseColorBoton = 'btn-outline-dark';
           break;
         default:
+          this.verInfo = true;
           break;
       }
     }
@@ -141,6 +148,11 @@ export class UsuarioTurnoComponent implements OnInit{
 
     return result;
   }
+
+    irAHistoriaClinica() {
+      const id = this.turno?.paciente!.id;
+      this.router.navigate(['/usuario/historiaClinica', id]);
+    }
 
     recibirTurno($event: Turno){
       this.turno = $event;
