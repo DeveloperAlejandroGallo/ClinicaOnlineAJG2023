@@ -89,7 +89,8 @@ export class UsuarioTurnoComponent implements OnInit{
     }
 
     cambiarCalificacion(calificacion: number) {
-        this.turno.valorizacion = calificacion;
+      if (this.usuarioConectado!.perfil == Perfil.paciente)
+          this.turno.valorizacion = calificacion;
       }
 
 
@@ -137,6 +138,11 @@ export class UsuarioTurnoComponent implements OnInit{
           break;
         default:
           this.verInfo = true;
+          this.verCalificarAtencion = false;
+          if(this.turno.estado == EstadoTurno.Realizado)
+          {
+            this.verCalificarAtencion = true;
+          }
           break;
       }
     }

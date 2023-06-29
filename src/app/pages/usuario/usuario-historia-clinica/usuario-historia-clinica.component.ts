@@ -204,7 +204,7 @@ export class UsuarioHistoriaClinicaComponent implements OnInit {
     let date = new Date();
     let fecha = `${date.getFullYear()}-${
       date.getMonth() + 1
-    }-${date.getDate()}}`;
+    }-${date.getDate()}`;
     return fecha;
   }
 

@@ -111,7 +111,7 @@
 
           <div *ngIf="verCalificarAtencion || verInfo">
             <h4 class="mb-3">Calificación</h4>
-            <div class="rating">
+            <div class="rating" >
               <span
                 class="star {{ turno.valorizacion >= 1 ? 'filled' : 'empty' }}"
                 (click)="cambiarCalificacion(1)"

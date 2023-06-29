@@ -13,7 +13,7 @@
       let turno of listadoDeTurnos
         | filtroTurnos : usuarioConectado : filtroNombre;
       let i = index"
-      class="list-group-item d-flex justify-content-between " appHighLigth="" (click)="accionSeleccionada('', turno)">
+      class="list-group-item d-flex justify-content-between " appHighLigth="" >
     <div>
       <div class="d-flex justify-content-between align-items-center" *ngIf="usuarioConectado?.perfil != 'paciente'">
         <h6 class="my-0">Paciente:</h6>
@@ -39,6 +39,12 @@
       </div>
       <div class="d-flex justify-content-between align-items-center">
         <span class="badge bg-{{colorEstado(turno.estado)}} rounded-pill align-self-end"><b>{{ turno.estado.toUpperCase() }}</b></span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center ">
+        <button class="btn btn-outline-info" data-toggle="tooltip" title="Info"
+          (click)="accionSeleccionada('',turno)">
+          <i class="fas fa-info-circle"></i>
+        </button>
       </div>
       <div *ngIf="usuarioConectado?.perfil == 'admin'" class="d-flex justify-content-between align-items-center ">
         <button *ngIf="verCancelarTurnoPaciente(turno)" class="btn btn-warning" data-toggle="tooltip" title="Cancelar"
